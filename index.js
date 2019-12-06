@@ -18,7 +18,7 @@
     // var sphere = new THREE.Mesh( geometry, material );
     // scene.add( sphere );
 
-    terrainGeneration(50, 50, 32, 20);
+    terrainGeneration(50, 50, 32, 10);
     animate();
 
     function animate()
@@ -89,28 +89,37 @@
 			}
 		}
         
-        geometry = new THREE.PlaneGeometry(width, height, segments, segments);
+        // geometry = new THREE.PlaneGeometry(width, height, segments, segments);
+        var geometry = new THREE.SphereGeometry( 5, 32, 32 );
 		geometryGround = new THREE.PlaneGeometry(width, height, segments, segments);
 		var index = 0;
         for(var i = 0; i <= segments; i++) 
         {
             for(var j = 0; j <= segments; j++) 
             {
-				geometry.vertices[index].z = terrain[i][j];
-				geometryGround.vertices[index].z = terrain[i][j] + deepth;
-				index++;
+                if(index < geometry.vertices.length)
+                {
+                    geometry.vertices[index].z += terrain[i][j];
+                    console.log(geometry.vertices[index].z);
+                    geometryGround.vertices[index].z = terrain[i][j] + deepth;
+                    index++;
+                }
 			}
         }
 
         texture = new THREE.TextureLoader().load( 'assets/tes.bmp' );
         
+        // var mesh = new THREE.Mesh(
+        //     new THREE.SphereGeometri(2,32,32);
+        //     new 
+        // );
         var materialGeometry = new THREE.MeshBasicMaterial( {color: 0x000000} );
         var materialGeometryGround = new THREE.MeshBasicMaterial( {map: texture} );
 
         var mesh = new THREE.Mesh( geometry, materialGeometry );
         var meshGround = new THREE.Mesh( geometry, materialGeometryGround );
 
-        scene.add(mesh, meshGround); 
+        scene.add(meshGround); 
     }
 
 })();
