@@ -13,6 +13,20 @@
     camera.position.set( 0, 0, 40 );
     controls.update();
 
+    var spotLight = new THREE.SpotLight( 0xffffff );
+    spotLight.position.set( 100, 1000, 100 );
+
+    spotLight.castShadow = true;
+
+    spotLight.shadow.mapSize.width = 1024;
+    spotLight.shadow.mapSize.height = 1024;
+
+    spotLight.shadow.camera.near = 500;
+    spotLight.shadow.camera.far = 4000;
+    spotLight.shadow.camera.fov = 30;
+
+    scene.add( spotLight );
+
     // var geometry = new THREE.SphereGeometry(5, 32, 32);
     // var material = new THREE.MeshBasicMaterial( {color: 0xffffff} );
     // var sphere = new THREE.Mesh( geometry, material );
@@ -92,34 +106,34 @@
         // geometry = new THREE.PlaneGeometry(width, height, segments, segments);
         var geometry = new THREE.SphereGeometry( 5, 32, 32 );
 		geometryGround = new THREE.PlaneGeometry(width, height, segments, segments);
-		var index = 0;
-        for(var i = 0; i <= segments; i++) 
-        {
-            for(var j = 0; j <= segments; j++) 
-            {
-                if(index < geometry.vertices.length)
-                {
-                    geometry.vertices[index].z += terrain[i][j];
-                    console.log(geometry.vertices[index].z);
-                    geometryGround.vertices[index].z = terrain[i][j] + deepth;
-                    index++;
-                }
-			}
-        }
+		// var index = 0;
+        // for(var i = 0; i <= segments; i++) 
+        // {
+        //     for(var j = 0; j <= segments; j++) 
+        //     {
+        //         if(index < geometry.vertices.length)
+        //         {
+        //             geometry.vertices[index].z += terrain[i][j];
+        //             console.log(geometry.vertices[index].z);
+        //             geometryGround.vertices[index].z = terrain[i][j] + deepth;
+        //             index++;
+        //         }
+		// 	}
+        // }
 
-        texture = new THREE.TextureLoader().load( 'assets/tes.bmp' );
+        texture = new THREE.TextureLoader().load( 'assets/bumpmap.jpg' );
         
         // var mesh = new THREE.Mesh(
         //     new THREE.SphereGeometri(2,32,32);
         //     new 
         // );
-        var materialGeometry = new THREE.MeshBasicMaterial( {color: 0x000000} );
-        var materialGeometryGround = new THREE.MeshBasicMaterial( {map: texture} );
+        var materialGeometry = new THREE.MeshPhongMaterial( {color: 0xff0000, bumpMap: texture} );
+        // var materialGeometryGround = new THREE.MeshBasicMaterial( {map: texture} );
 
         var mesh = new THREE.Mesh( geometry, materialGeometry );
-        var meshGround = new THREE.Mesh( geometry, materialGeometryGround );
+        // var meshGround = new THREE.Mesh( geometry, materialGeometryGround );
 
-        scene.add(meshGround); 
+        scene.add(mesh); 
     }
 
 })();
