@@ -10,27 +10,28 @@
 
     //Controls
     var controls = new THREE.OrbitControls( camera, renderer.domElement );
-    camera.position.set( 0, 0, 3 );
+    camera.position.set( 0, 0, 5 );
     controls.update();
 
-    // var texture = new THREE.TextureLoader().load( 'assets/white.jpg' );
-    var bump = new THREE.TextureLoader().load( 'assets/bumpmap.jpg' );
-    var geometry = new THREE.SphereGeometry(5, 30, 30);
-    // var geometry2 = new THREE.SphereGeometry(5, 32, 32);
+    var geometry = new THREE.SphereGeometry(2, 31, 32);
     var material =  new THREE.MeshPhongMaterial({
-        color:0xffffff,
-        // map: texture,
-        // bumpMap: bump
+        color:0xff0000,
     })
 
-    // var material =  new THREE.MeshPhongMaterial({color : 0xffffff})
     var sphere = new THREE.Mesh( geometry, material );
-    scene.add( sphere );
 
-    //Generate White Blood Cell Texture
-    surfaceGenerator(4);
+    for (var i = 0; i < sphere.geometry.vertices.length; i++) 
+    {
+        sphere.geometry.vertices[i].x+=0.5;
+        sphere.geometry.vertices[i].y+=0.5;
+        sphere.geometry.vertices[i].z+=0.7;
+        
+    }
+
     sphere.geometry.computeVertexNormals();
-    sphere.geometry.normalsNeedUpdate = true;
+    sphere.geometry.normalsNeedUpdate = true; 
+
+    scene.add( whitebloodcell(19) , sphere);
 
     //Lighting
     var spotLight = new THREE.SpotLight( 0xffffff );
@@ -47,7 +48,7 @@
 
     scene.add( camera );
     camera.add( spotLight );
-    spotLight.position.set( 0, 0, 3 );
+    spotLight.position.set( 0, 0, 10 );
     spotLight.target = camera;
     
     //Render
@@ -58,16 +59,6 @@
         requestAnimationFrame( animate );
         controls.update();
         renderer.render( scene, camera );
-    }
-
-    function surfaceGenerator(k) 
-    {   
-        for (var i = 0; i < sphere.geometry.vertices.length; i++) 
-        {
-            var p = sphere.geometry.vertices[i];
-            p.normalize().multiplyScalar(1 + 1/6 * noise.perlin3(p.x * k, p.y * k, p.z * k));
-        }
-
     }
 
 })();
