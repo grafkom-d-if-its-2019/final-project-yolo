@@ -44,7 +44,6 @@
     var spotLight = new THREE.SpotLight( 0xffffff );
     
     spotLight.castShadow = true;
-    spotLight.position.set( 0, 0, 3 );
 
     spotLight.shadow.mapSize.width = 1024;
     spotLight.shadow.mapSize.height = 1024;
@@ -57,13 +56,20 @@
     camera.add( spotLight );
     spotLight.position.set( 0, 0, 10 );
     spotLight.target = camera;
+
+    var center = new THREE.Vector3(0,0,0);
     
     //Render
     animate();
-
+    
     function animate()
     {
+        // console.log(center.distanceTo(camera.position));
         requestAnimationFrame( animate );
+        if(center.distanceTo(camera.position) <= 5)
+            outerwall.material.side = THREE.DoubleSide;
+        else if (center.distanceTo(camera.position) > 5)
+            outerwall.material.side = THREE.FrontSide;
         controls.update();
         renderer.render( scene, camera );
     }
