@@ -1,4 +1,4 @@
-function whitebloodcell(k){   
+function whitebloodcell(k, scene){   
     var geometry = new THREE.SphereGeometry(5, 31, 32);
     var material =  new THREE.MeshPhongMaterial({
         color:0xffffff,
@@ -22,5 +22,6 @@ function whitebloodcell(k){
     sphere.geometry.computeVertexNormals();
     sphere.geometry.normalsNeedUpdate = true; 
 
-    return sphere;
+    scene.add(sphere);
+    // return sphere;
 }

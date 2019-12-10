@@ -1,0 +1,9 @@
+Buat sell baru = buat function baru pake parameter scene, no return langsung add di dalam function
+
+fov near ku ganti buat bumpmap ga terlalu pecah, sementara ku buat 3
+
+Aliran darah mending dibuat kiri ke kanan
+
+Dinding pembuluh darah pake Knottorus atau tube, THREE.BackSide kamera masuk ke dalam Knottorus atau tube pake texture dari inet mungkin ada.
+
+OTW buat dinding pembuluh darah + keping darah

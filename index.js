@@ -3,19 +3,24 @@
     //Add Scene
     var scene = new THREE.Scene();
     scene.background = new THREE.Color( 0x000000 );
-    var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
+
+    // Takbenerno fov near e, ben iso pake bumpmap tanpa pecah, texture takbuat e
+    var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 3, 1000 );
     var renderer = new THREE.WebGLRenderer();
     renderer.setSize( window.innerWidth, window.innerHeight );
     document.body.appendChild( renderer.domElement );
 
     //Controls
     var controls = new THREE.OrbitControls( camera, renderer.domElement );
-    camera.position.set( 0, 0, 5 );
+    camera.position.set( 0, 0, 15 );
     controls.update();
+
+    var bump = new THREE.TextureLoader().load('assets/bumpmap.jpg');
 
     var geometry = new THREE.SphereGeometry(2, 31, 32);
     var material =  new THREE.MeshPhongMaterial({
         color:0xff0000,
+        bumpMap: bump
     })
 
     var sphere = new THREE.Mesh( geometry, material );
@@ -25,13 +30,15 @@
         sphere.geometry.vertices[i].x+=0.5;
         sphere.geometry.vertices[i].y+=0.5;
         sphere.geometry.vertices[i].z+=0.7;
-        
     }
 
     sphere.geometry.computeVertexNormals();
     sphere.geometry.normalsNeedUpdate = true; 
 
-    scene.add( whitebloodcell(19) , sphere);
+    // whitebloodcell(19, scene);
+    // redBloodCell(scene);
+
+    scene.add(sphere);
 
     //Lighting
     var spotLight = new THREE.SpotLight( 0xffffff );
