@@ -12,7 +12,7 @@
 
     //Controls
     var controls = new THREE.OrbitControls( camera, renderer.domElement );
-    camera.position.set( 0, 0, 15 );
+    camera.position.set( 0, 0, 1 );
     controls.update();
 
     var bump = new THREE.TextureLoader().load('assets/bumpmap.jpg');
@@ -37,8 +37,9 @@
 
     // whitebloodcell(19, scene);
     // redBloodCell(scene);
+    bloodVessels(scene);
 
-    scene.add(sphere);
+    // scene.add(sphere);
 
     //Lighting
     var spotLight = new THREE.SpotLight( 0xffffff );
@@ -66,10 +67,10 @@
     {
         // console.log(center.distanceTo(camera.position));
         requestAnimationFrame( animate );
-        if(center.distanceTo(camera.position) <= 5)
-            outerwall.material.side = THREE.DoubleSide;
-        else if (center.distanceTo(camera.position) > 5)
-            outerwall.material.side = THREE.FrontSide;
+        // if(center.distanceTo(camera.position) <= 5)
+        //     outerwall.material.side = THREE.DoubleSide;
+        // else if (center.distanceTo(camera.position) > 5)
+        //     outerwall.material.side = THREE.FrontSide;
         controls.update();
         renderer.render( scene, camera );
     }
