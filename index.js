@@ -2,7 +2,8 @@
 
     //Add Scene
     var scene = new THREE.Scene();
-    scene.background = new THREE.Color( 0x000000 );
+    // scene.background = new THREE.TextureLoader().load('assets/white.jpg');
+    scene.background = new THREE.Color(0x000000)
 
     // Takbenerno fov near e, ben iso pake bumpmap tanpa pecah, texture takbuat e
     var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 3, 1000 );
@@ -12,7 +13,7 @@
 
     //Controls
     var controls = new THREE.OrbitControls( camera, renderer.domElement );
-    camera.position.set( 0, 0, 1 );
+    camera.position.set( 100, 0, 1 );
     controls.update();
 
     var bump = new THREE.TextureLoader().load('assets/bumpmap.jpg');
@@ -20,7 +21,7 @@
     var geometry = new THREE.SphereGeometry(2, 31, 32);
     var material =  new THREE.MeshPhongMaterial({
         color:0xff0000,
-        bumpMap: bump
+        // bumpMap: bump
     })
 
     var sphere = new THREE.Mesh( geometry, material );
