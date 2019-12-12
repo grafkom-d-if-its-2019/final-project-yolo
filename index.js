@@ -13,7 +13,7 @@
 
     //Controls
     // var controls = new THREE.OrbitControls( camera, renderer.domElement );
-    camera.position.set( 100, 0, 1 );
+    camera.position.set( 99, 1, 15 );
     camera.lookAt(0,0,0)
     // controls.update();
 
