@@ -14,9 +14,10 @@
 
     //Controls
     var controls = new THREE.OrbitControls( camera, renderer.domElement );
-    // camera.position.set( 99.04596625741698, 0.9678363714214987, 14.627366847548114 );
+    // camera.position.set(92.83968629417194, 9.610419921941201, -36.24130899572845);
+    camera.position.set(0, 0, 15);
     camera.lookAt(0,0,0);
-    // controls.update();
+    controls.update();
 
     var bump = new THREE.TextureLoader().load('assets/bumpmap.jpg');
 
@@ -38,7 +39,9 @@
     sphere.geometry.computeVertexNormals();
     sphere.geometry.normalsNeedUpdate = true; 
 
-    // whitebloodcell(19, meshes);
+    whitebloodcell(19, meshes);
+    // limfositB(19, meshes);
+    limfositT(19, meshes);
     // redBloodCell(meshes);
     // bloodVessels(meshes);
 
@@ -80,7 +83,7 @@
         //     outerwall.material.side = THREE.DoubleSide;
         // else if (center.distanceTo(camera.position) > 5)
         //     outerwall.material.side = THREE.FrontSide;
-        // controls.update();
+        controls.update();
         renderer.render( scene, camera );
     }
 
