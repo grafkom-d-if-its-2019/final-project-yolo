@@ -12,9 +12,10 @@
     document.body.appendChild( renderer.domElement );
 
     //Controls
-    var controls = new THREE.OrbitControls( camera, renderer.domElement );
+    // var controls = new THREE.OrbitControls( camera, renderer.domElement );
     camera.position.set( 100, 0, 1 );
-    controls.update();
+    camera.lookAt(0,0,0)
+    // controls.update();
 
     var bump = new THREE.TextureLoader().load('assets/bumpmap.jpg');
 
@@ -72,7 +73,7 @@
         //     outerwall.material.side = THREE.DoubleSide;
         // else if (center.distanceTo(camera.position) > 5)
         //     outerwall.material.side = THREE.FrontSide;
-        controls.update();
+        // controls.update();
         renderer.render( scene, camera );
     }
 
