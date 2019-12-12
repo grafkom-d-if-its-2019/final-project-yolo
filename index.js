@@ -81,7 +81,6 @@
         // else if (center.distanceTo(camera.position) > 5)
         //     outerwall.material.side = THREE.FrontSide;
         // controls.update();
-        // console.log(camera.position.x, camera.position.y, camera.position.z);      
         renderer.render( scene, camera );
     }
 
