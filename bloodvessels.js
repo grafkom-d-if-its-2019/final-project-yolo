@@ -18,7 +18,7 @@ CustomSinCurve.prototype.getPoint= function (t){
     return new THREE.Vector3(tx, ty, tz).multiplyScalar(this.scale);
 }
 
-function bloodVessels(scene)
+function bloodVessels(meshes)
 {
     var texture = new THREE.TextureLoader().load('assets/blood_vessel_3.jpg');
     var path = new CustomSinCurve(10);
@@ -30,5 +30,6 @@ function bloodVessels(scene)
 
     var vessels = new THREE.Mesh(geom, mat);
 
-    scene.add(vessels);
+    meshes.push(vessels);
+    // scene.add(vessels);
 }

@@ -1,4 +1,4 @@
-function redBloodCell(scene)
+function redBloodCell(meshes)
 {
     // Tinggal texture mikir biar kaga pecah
 
@@ -10,5 +10,6 @@ function redBloodCell(scene)
     geometry_2.rotateX(0.5*Math.PI)
     var cylinder = new THREE.Mesh(geometry_2, material);
 
-    scene.add(cylinder, torus, );
+    // scene.add(cylinder, torus, );
+    meshes.push(cylinder, torus)
 }
