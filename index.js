@@ -41,9 +41,10 @@
 
     whitebloodcell(19, meshes);
     // limfositB(19, meshes);
-    limfositT(19, meshes);
+    // limfositT(19, meshes);
     // redBloodCell(meshes);
     // bloodVessels(meshes);
+    monosit(meshes);
 
     // scene.add(sphere);
 
@@ -70,7 +71,7 @@
     spotLight.position.set( 0, 0, 10 );
     spotLight.target = camera;
 
-    var center = new THREE.Vector3(0,0,0);
+    var center = new THREE.Vector3;
     
     //Render
     animate();
