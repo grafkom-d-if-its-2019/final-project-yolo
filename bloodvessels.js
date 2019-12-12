@@ -10,8 +10,9 @@ CustomSinCurve.prototype.constructor = CustomSinCurve;
 
 CustomSinCurve.prototype.getPoint= function (t){
     var tx = 15* (t*3-1.5);
-    var ty = Math.sin(2 * Math.PI ) * 10;
-    var tz = 0;
+    // var ty = Math.sin(2*Math.PI * t) *5;
+    var ty = 0;
+    var tz = Math.sin(2*Math.PI * t) *5;
 
     // console.log(t)
 
@@ -22,7 +23,7 @@ function bloodVessels(meshes)
 {
     var texture = new THREE.TextureLoader().load('assets/blood_vessel_3.jpg');
     var path = new CustomSinCurve(10);
-    var geom = new THREE.TubeGeometry(path, 20, 20, 20, false);
+    var geom = new THREE.TubeGeometry(path, 20, 35, 20, false);
     var mat = new THREE.MeshPhongMaterial({color: 0xff0000, 
         map : texture,
         side: THREE.BackSide
