@@ -39,7 +39,7 @@
     sphere.geometry.computeVertexNormals();
     sphere.geometry.normalsNeedUpdate = true; 
 
-    // whitebloodcell(19, meshes);
+    whitebloodcell(19, meshes);
     // limfositB(19, meshes);
     // limfositT(19, meshes);
     // redBloodCell(meshes);
