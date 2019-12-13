@@ -42,8 +42,8 @@
     sphere.geometry.computeVertexNormals();
     sphere.geometry.normalsNeedUpdate = true; 
 
-    whitebloodcell(19, meshes);
-    limfositB(19, meshes);
+    // whitebloodcell(19, meshes);
+    // limfositB(19, meshes);
     // limfositT(19, meshes);
     // redBloodCell(meshes);
     // bloodVessels(meshesVessel);
@@ -191,6 +191,37 @@
         }
     );
 
+    //  // BASOFIL LOAD
+    //  matloader.load
+    //  (
+    //      //Resource URL
+    //      'assets/BASOFIL.mtl',
+ 
+    //      // called when resource is loaded
+    //      function ( material ) 
+    //      {
+    //          material.preload();
+ 
+    //          loader.setMaterials(material)
+ 
+    //          loader.load
+    //          (
+    //              // resource URL
+    //              'assets/BASOFIL.obj',
+         
+    //              // called when resource is loaded
+    //              function ( object ) 
+    //              {
+    //                  object.position.z += 1
+    //                  object.position.y -= 2
+    //                  scene.add(object);
+    //              }, 
+    //              onProgress, 
+    //              onError
+    //          );
+    //      }
+    //  );
+
     scene.add(meshesVessel[0]);
 
     var i;
@@ -261,22 +292,22 @@
         // }
         
         // update the picking ray with the camera and mouse position
-        raycaster.setFromCamera( mouse, camera );
+        // raycaster.setFromCamera( mouse, camera );
 
         // calculate objects intersecting the picking ray
-        var intersects = raycaster.intersectObjects( scene.children, true );
+        // var intersects = raycaster.intersectObjects( scene.children, true );
 
-        if ( intersects.length > 0 ) {
-            if ( INTERSECTED != intersects[ 0 ].object ) {
-                if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
-                INTERSECTED = intersects[ 0 ].object;
-                INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
-                INTERSECTED.material.emissive.setHex( 0x00ff00 );
-            }
-        } else {
-            if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
-            INTERSECTED = null;
-        }
+        // if ( intersects.length > 0 ) {
+        //     if ( INTERSECTED != intersects[ 0 ].object ) {
+        //         if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
+        //         INTERSECTED = intersects[ 0 ].object;
+        //         INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
+        //         INTERSECTED.material.emissive.setHex( 0x00ff00 );
+        //     }
+        // } else {
+        //     if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
+        //     INTERSECTED = null;
+        // }
 
         // console.log(scene.children[3].position.x);
         controls.update();
