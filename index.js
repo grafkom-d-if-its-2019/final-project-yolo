@@ -1,4 +1,4 @@
-(function main(){
+(function(){
 
     //Add Scene
     var path = [];
@@ -9,7 +9,6 @@
     // scene.background = new THREE.TextureLoader().load('assets/white.jpg');
     scene.background = new THREE.Color(0x000000)
 
-    // Takbenerno fov near e, ben iso pake bumpmap tanpa pecah, texture takbuat e
     var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 3, 1000 );
     var renderer = new THREE.WebGLRenderer();
     renderer.setSize( window.innerWidth, window.innerHeight );
@@ -46,7 +45,7 @@
     // limfositB(19, meshes);
     // limfositT(19, meshes);
     // redBloodCell(meshes);
-    // bloodVessels(meshesVessel);
+    bloodVessels(meshesVessel);
     // monosit(meshes);
     
     //TESTING
@@ -68,203 +67,92 @@
     };
     var onError = function () { };
 
-    // instantiate the loader
-
-    // load a resource from provided URL synchronously
-
-    var objects = []
-
-     // PLATELET LOAD
-     matloader.load
-     (
-         //Resource URL
-         'assets/PLATELET.mtl',
- 
- 
-         // called when resource is loaded
-         function ( material ) 
-         {
-             material.preload();
- 
-             loader.setMaterials(material)
- 
-             loader.load
-             (
-                 // resource URL
-                 'assets/PLATELET.obj',
-         
-                 // called when resource is loaded
-                 function ( object ) 
-                 {
-                     object.position.z += 1
-                     object.position.y -= 2
-                     scene.add(object);
-                 }, 
-                 onProgress, 
-                 onError
-             );
-         }
-     );
-    
-    // // NEUTROFIL LOAD (NEW)
-    // matloader.load
-    // (
-    //     //Resource URL
-    //     'assets/NEUTROFIL.mtl',
-
-
-    //     // called when resource is loaded
-    //     function ( material ) 
-    //     {
-    //         material.preload();
-
-    //         loader.setMaterials(material)
-
-    //         loader.load
-    //         (
-    //             // resource URL
-    //             'assets/NEUTROFIL.obj',
-        
-    //             // called when resource is loaded
-    //             function ( object ) 
-    //             {
-    //                 object.position.z += 1
-    //                 object.position.y -= 2
-    //                 scene.add(object);
-    //             }, 
-    //             onProgress, 
-    //             onError
-    //         );
-    //     }
-    // );
-
-    // // EOSINOFIL LOAD (NEW)
-    // matloader.load
-    // (
-    //     //Resource URL
-    //     'assets/EOSINOFIL.mtl',
-
-    //     // called when resource is loaded
-    //     function ( material ) 
-    //     {
-    //         material.preload();
-
-    //         loader.setMaterials(material)
-
-    //         loader.load
-    //         (
-    //             // resource URL
-    //             'assets/EOSINOFIL.obj',
-        
-    //             // called when resource is loaded
-    //             function ( object ) 
-    //             {
-    //                 object.position.y -= 3
-    //                 scene.add(object);
-    //             }, 
-    //             onProgress, 
-    //             onError
-    //         );
-    //     }
-    // );
-
-    // // MONOSIT LOAD (NEW)
-    // matloader.load
-    // (
-    //     //Resource URL
-    //     'assets/MONOSIT.mtl',
-
-    //     // called when resource is loaded
-    //     function ( material ) 
-    //     {
-    //         material.preload();
-
-    //         loader.setMaterials(material)
-
-    //         loader.load
-    //         (
-    //             // resource URL
-    //             'assets/MONOSIT.obj',
-        
-    //             // called when resource is loaded
-    //             function ( object ) 
-    //             {
-    //                 object.position.z += 1
-    //                 object.position.y -= 2
-    //                 scene.add(object);
-    //             }, 
-    //             onProgress, 
-    //             onError
-    //         );
-    //     }
-    // );
-
-    //  // BASOFIL LOAD (NEW)
-    //  matloader.load
-    //  (
-    //      //Resource URL
-    //      'assets/BASOFIL.mtl',
- 
-    //      // called when resource is loaded
-    //      function ( material ) 
-    //      {
-    //          material.preload();
- 
-    //          loader.setMaterials(material)
- 
-    //          loader.load
-    //          (
-    //              // resource URL
-    //              'assets/BASOFIL.obj',
-         
-    //              // called when resource is loaded
-    //              function ( object ) 
-    //              {
-    //                  object.position.z += 1
-    //                  object.position.y -= 2
-    //                  scene.add(object);
-    //              }, 
-    //              onProgress, 
-    //              onError
-    //          );
-    //      }
-    //  );
-
-    scene.add(meshesVessel[0]);
-
-    var i;
-
-    for(i=0; i<objects.length; i++)
+    // penentuan obj file yang harus di load
+    var index=0;
+    var time = new Date();
+    var start = time.getTime();
+    console.log(start);
+    var end;
+    function next()
     {
-        scene.add(objects[i]);
+        index++;
+        if(index == 1)
+        {
+            my_loader('assets/BASOFIL.mtl', 'assets/BASOFIL.obj', index);
+        }
+        else if(index == 2){
+            my_loader('assets/EOSINOFIL.mtl', 'assets/EOSINOFIL.obj', index);
+        }
+        else if(index == 3){
+            my_loader('assets/NEUTROFIL.mtl', 'assets/NEUTROFIL.obj', index);
+        }
+        // else if(index == 4){
+        //     my_loader('assets/MONOSIT.mtl', 'assets/MONOSIT.obj', index);
+        // }
+        else if(index == 4){
+            my_loader('assets/PLATELET.mtl', 'assets/PLATELET.obj', index);
+        }
+        else if(index==5)
+        {
+            var timer = new Date();
+            end = timer.getTime();
+            // var diff = start - end;
+            // diff *= -1;     
+            // console.log("Waktu load : " + diff);
+            console.log(end);
+            for(i=0; i<meshes.length; i++)
+            {
+                scene.add(meshes[i]);
+            }
+        }
     }
 
-    //Lighting
-    var spotLight = new THREE.SpotLight( 0xffffff );
-    
-    spotLight.castShadow = true;
+    // fungsi load file obj dan mtl
+    function my_loader(mtlfile, objfile, index)
+    {
+        matloader.load
+        (
+            //Resource URL
+            mtlfile,
 
-    spotLight.shadow.mapSize.width = 1024;
-    spotLight.shadow.mapSize.height = 1024;
+            // called when resource is loaded
+            function ( material ) 
+            {
+                material.preload();
 
-    spotLight.shadow.camera.near = 500;
-    spotLight.shadow.camera.far = 4000;
-    spotLight.shadow.camera.fov = 30;
+                loader.setMaterials(material)
 
-    scene.add( camera );
-    camera.add( spotLight );
-    spotLight.position.set( 0, 0, 10 );
-    spotLight.target = camera;
+                loader.load
+                (
+                    // resource URL
+                    objfile,
+            
+                    // called when resource is loaded
+                    function ( object ) 
+                    {
+                        object.position.z += 10*index;
+                        object.position.y -= 2;
+                        meshes.push(object);
+                        // scene.add(object);
+                        next();
+                    }, 
+                    onProgress, 
+                    onError
+                );
+            }
+        );
+    }
 
-    var center = new THREE.Vector3;
-    var arah_z = 1;
-    
-    //Render
-    generatePath();
+    my_loader('assets/MONOSIT.mtl', 'assets/MONOSIT.obj', index);
+  
     var raycaster = new THREE.Raycaster();
     var mouse = new THREE.Vector2(), INTERSECTED;
     var id = scene.getObjectById( 0, true );
     var object = scene.getObjectByName( "sphere", true );
+    var center = new THREE.Vector3;
+    var arah_z = 1;
+
+    glUtils.SL.init({ callback: function() { main(); }});
 
     function onMouseDown( event ) {
 
@@ -275,48 +163,29 @@
         mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
     
     }
-    
+
+    document.addEventListener( 'mousedown', onMouseDown, false );
     var go=1;
+
     function animate()
     {
-        // var i;
-        // for(i=0; i<meshes.length; i++)
-        // {
-        //     meshes[i].position.x += 0.05;
-        //     for (var vertexIndex = 0; vertexIndex < meshes[i].geometry.vertices.length; vertexIndex++)
-        //     {       
-        //         var localVertex = meshes[i].geometry.vertices[vertexIndex].clone();
-        //         var globalVertex = meshes[i].matrix.multiplyVector3(localVertex);
-        //         var directionVector = globalVertex.sub( meshes[i].position );
-
-        //         var ray = new THREE.Raycaster( meshes[i].position, directionVector.clone().normalize() );
-        //         var collisionResults = ray.intersectObjects( meshesVessel );
-        //         if ( collisionResults.length > 0 && collisionResults[0].distance < directionVector.length() ) 
-        //         {
-        //             // a collision occurred... do something...
-        //             arah_z *= -1;
-        //         }
-        //     }
-        //     meshes[i].position.z += 0.1*arah_z;
-        // }
-        
         // update the picking ray with the camera and mouse position
-        // raycaster.setFromCamera( mouse, camera );
+        raycaster.setFromCamera( mouse, camera );
 
         // calculate objects intersecting the picking ray
-        // var intersects = raycaster.intersectObjects( scene.children, true );
+        var intersects = raycaster.intersectObjects( meshes, true );
 
-        // if ( intersects.length > 0 ) {
-        //     if ( INTERSECTED != intersects[ 0 ].object ) {
-        //         if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
-        //         INTERSECTED = intersects[ 0 ].object;
-        //         INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
-        //         INTERSECTED.material.emissive.setHex( 0x00ff00 );
-        //     }
-        // } else {
-        //     if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
-        //     INTERSECTED = null;
-        // }
+        if ( intersects.length > 0 ) {
+            if ( INTERSECTED != intersects[ 0 ].object ) {
+                if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
+                INTERSECTED = intersects[ 0 ].object;
+                INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
+                INTERSECTED.material.emissive.setHex( 0x00ff00 );
+            }
+        } else {
+            if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
+            INTERSECTED = null;
+        }
 
         // console.log("masuk animate");
         // scene.children[1].rotation.x+=0.1;
@@ -333,6 +202,7 @@
         renderer.render( scene, camera );
         requestAnimationFrame( animate );
     }
+    setTimeout (animate, 1000);
 
     function generatePath()
     {
@@ -348,8 +218,31 @@
         }
     }
 
+    function main(){
+        scene.add(meshesVessel[0]);
 
-    //Render
-    animate();
-    document.addEventListener( 'mousedown', onMouseDown, false );
+        //Lighting
+        var spotLight = new THREE.SpotLight( 0xffffff );
+        
+        spotLight.castShadow = true;
+
+        spotLight.shadow.mapSize.width = 1024;
+        spotLight.shadow.mapSize.height = 1024;
+
+        spotLight.shadow.camera.near = 500;
+        spotLight.shadow.camera.far = 4000;
+        spotLight.shadow.camera.fov = 30;
+
+        scene.add( camera );
+        camera.add( spotLight );
+        spotLight.position.set( 0, 0, 10 );
+        spotLight.target = camera;
+        
+        //Render
+        generatePath();
+        
+        //Render
+        animate();
+    }
+
 })();
