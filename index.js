@@ -128,11 +128,41 @@
     //     }
     // );
 
-    // EOSINOFIL LOAD
+    // // EOSINOFIL LOAD
+    // matloader.load
+    // (
+    //     //Resource URL
+    //     'assets/EOSINOFIL.mtl',
+
+    //     // called when resource is loaded
+    //     function ( material ) 
+    //     {
+    //         material.preload();
+
+    //         loader.setMaterials(material)
+
+    //         loader.load
+    //         (
+    //             // resource URL
+    //             'assets/EOSINOFIL.obj',
+        
+    //             // called when resource is loaded
+    //             function ( object ) 
+    //             {
+    //                 object.position.y -= 3
+    //                 scene.add(object);
+    //             }, 
+    //             onProgress, 
+    //             onError
+    //         );
+    //     }
+    // );
+
+    // MONOSIT LOAD
     matloader.load
     (
         //Resource URL
-        'assets/EOSINOFIL.mtl',
+        'assets/MONOSIT.mtl',
 
         // called when resource is loaded
         function ( material ) 
@@ -144,12 +174,13 @@
             loader.load
             (
                 // resource URL
-                'assets/EOSINOFIL.obj',
+                'assets/MONOSIT.obj',
         
                 // called when resource is loaded
                 function ( object ) 
                 {
-                    object.position.y -= 3
+                    object.position.z += 1
+                    object.position.y -= 2
                     scene.add(object);
                 }, 
                 onProgress, 
