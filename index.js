@@ -160,67 +160,67 @@
     //     }
     // );
 
-    // MONOSIT LOAD
-    matloader.load
-    (
-        //Resource URL
-        'assets/MONOSIT.mtl',
+    // // MONOSIT LOAD
+    // matloader.load
+    // (
+    //     //Resource URL
+    //     'assets/MONOSIT.mtl',
 
-        // called when resource is loaded
-        function ( material ) 
-        {
-            material.preload();
+    //     // called when resource is loaded
+    //     function ( material ) 
+    //     {
+    //         material.preload();
 
-            loader.setMaterials(material)
+    //         loader.setMaterials(material)
 
-            loader.load
-            (
-                // resource URL
-                'assets/MONOSIT.obj',
+    //         loader.load
+    //         (
+    //             // resource URL
+    //             'assets/MONOSIT.obj',
         
-                // called when resource is loaded
-                function ( object ) 
-                {
-                    object.position.z += 1
-                    object.position.y -= 2
-                    scene.add(object);
-                }, 
-                onProgress, 
-                onError
-            );
-        }
-    );
+    //             // called when resource is loaded
+    //             function ( object ) 
+    //             {
+    //                 object.position.z += 1
+    //                 object.position.y -= 2
+    //                 scene.add(object);
+    //             }, 
+    //             onProgress, 
+    //             onError
+    //         );
+    //     }
+    // );
 
-    //  // BASOFIL LOAD
-    //  matloader.load
-    //  (
-    //      //Resource URL
-    //      'assets/BASOFIL.mtl',
+     // BASOFIL LOAD
+     matloader.load
+     (
+         //Resource URL
+         'assets/BASOFIL.mtl',
  
-    //      // called when resource is loaded
-    //      function ( material ) 
-    //      {
-    //          material.preload();
+         // called when resource is loaded
+         function ( material ) 
+         {
+             material.preload();
  
-    //          loader.setMaterials(material)
+             loader.setMaterials(material)
  
-    //          loader.load
-    //          (
-    //              // resource URL
-    //              'assets/BASOFIL.obj',
+             loader.load
+             (
+                 // resource URL
+                 'assets/BASOFIL.obj',
          
-    //              // called when resource is loaded
-    //              function ( object ) 
-    //              {
-    //                  object.position.z += 1
-    //                  object.position.y -= 2
-    //                  scene.add(object);
-    //              }, 
-    //              onProgress, 
-    //              onError
-    //          );
-    //      }
-    //  );
+                 // called when resource is loaded
+                 function ( object ) 
+                 {
+                     object.position.z += 1
+                     object.position.y -= 2
+                     scene.add(object);
+                 }, 
+                 onProgress, 
+                 onError
+             );
+         }
+     );
 
     scene.add(meshesVessel[0]);
 
