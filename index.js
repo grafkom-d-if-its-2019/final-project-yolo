@@ -40,13 +40,44 @@
     sphere.geometry.computeVertexNormals();
     sphere.geometry.normalsNeedUpdate = true; 
 
-    whitebloodcell(19, meshes);
+    // whitebloodcell(19, meshes);
     // limfositB(19, meshes);
     // limfositT(19, meshes);
     // redBloodCell(meshes);
     // bloodVessels(meshes);
-    monosit(meshes);
-    bloodVessels(meshesVessel);
+    // monosit(meshes);
+    
+    //TESTING
+    // platelet(meshes);
+  
+    // instantiate a loader
+    var loader = new THREE.OBJLoader();
+
+    // load a resource
+    loader.load(
+        // resource URL
+        'assets/PLATELET.obj',
+        // called when resource is loaded
+        function ( object ) {
+
+            scene.add( object );
+
+        },
+        // called when loading is in progresses
+        function ( xhr ) {
+
+            console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+
+        },
+        // called when loading has errors
+        function ( error ) {
+
+            console.log( 'An error happened' );
+
+        }
+    );
+
+
 
     scene.add(meshesVessel[0]);
 
