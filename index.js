@@ -60,7 +60,7 @@
     // Loaders
     var loader = new THREE.OBJLoader(manager);
     var matloader = new THREE.MTLLoader(manager);
-    var onProgress = function ( xhr ) {
+    var onProgress = function a ( xhr ) {
         if ( xhr.lengthComputable ) {
             var percentComplete = xhr.loaded / xhr.total * 100;
             console.log( Math.round( percentComplete, 2 ) + '% downloaded' );
@@ -68,18 +68,11 @@
     };
     var onError = function () { };
 
-    // // PLATELET LOAD
-    // matloader.load
-    // (
-    //     //Resource URL
-    //     'assets/PLATELET.mtl',
+    // instantiate the loader
 
-    //     // called when resource is loaded
-    //     function ( material ) 
-    //     {
-    //         material.preload();
+    // load a resource from provided URL synchronously
 
-    //         loader.setMaterials(material)
+    var objects = []
 
     //         loader.load
     //         (
@@ -225,9 +218,10 @@
     scene.add(meshesVessel[0]);
 
     var i;
-    for(i=0; i<meshes.length; i++)
+
+    for(i=0; i<objects.length; i++)
     {
-        scene.add(meshes[i]);
+        scene.add(objects[i]);
     }
 
     //Lighting
@@ -252,7 +246,6 @@
     
     //Render
     generatePath();
-    animate();
     var raycaster = new THREE.Raycaster();
     var mouse = new THREE.Vector2(), INTERSECTED;
     var id = scene.getObjectById( 0, true );
@@ -268,6 +261,7 @@
     
     }
     
+    var go=1;
     function animate()
     {
         // var i;
@@ -309,8 +303,17 @@
         //     INTERSECTED = null;
         // }
 
-        // console.log(scene.children[3].position.x);
+        // console.log("masuk animate");
+        scene.children[1].rotation.x+=0.1;
+
         controls.update();
+
+        // console.log(scene.children[1]);
+
+        if(go)
+        {
+            go=0;
+        }
         // console.log(camera.position.x, camera.position.y, camera.position.z);
         renderer.render( scene, camera );
         requestAnimationFrame( animate );
@@ -327,10 +330,11 @@
             var tz = Math.sin(2*Math.PI * t) *5;
             var point = new THREE.Vector3(tx, ty, tz);
             path.push(point);
-            // console.log(tx, ty, tz);
         }
     }
 
+
     //Render
+    animate();
     document.addEventListener( 'mousedown', onMouseDown, false );
 })();
