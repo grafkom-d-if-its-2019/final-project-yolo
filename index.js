@@ -74,37 +74,37 @@
 
     var objects = []
 
-     // PLATELET LOAD
-     matloader.load
-     (
-         //Resource URL
-         'assets/PLATELET.mtl',
+    //  // PLATELET LOAD
+    //  matloader.load
+    //  (
+    //      //Resource URL
+    //      'assets/PLATELET.mtl',
  
  
-         // called when resource is loaded
-         function ( material ) 
-         {
-             material.preload();
+    //      // called when resource is loaded
+    //      function ( material ) 
+    //      {
+    //          material.preload();
  
-             loader.setMaterials(material)
+    //          loader.setMaterials(material)
  
-             loader.load
-             (
-                 // resource URL
-                 'assets/PLATELET.obj',
+    //          loader.load
+    //          (
+    //              // resource URL
+    //              'assets/PLATELET.obj',
          
-                 // called when resource is loaded
-                 function ( object ) 
-                 {
-                     object.position.z += 1
-                     object.position.y -= 2
-                     scene.add(object);
-                 }, 
-                 onProgress, 
-                 onError
-             );
-         }
-     );
+    //              // called when resource is loaded
+    //              function ( object ) 
+    //              {
+    //                  object.position.z += 1
+    //                  object.position.y -= 2
+    //                  scene.add(object);
+    //              }, 
+    //              onProgress, 
+    //              onError
+    //          );
+    //      }
+    //  );
     
     // // NEUTROFIL LOAD (NEW)
     // matloader.load
@@ -229,6 +229,37 @@
     //          );
     //      }
     //  );
+
+     // RED LOAD (NEW)
+     matloader.load
+     (
+         //Resource URL
+         'assets/RED.mtl',
+ 
+         // called when resource is loaded
+         function ( material ) 
+         {
+             material.preload();
+ 
+             loader.setMaterials(material)
+ 
+             loader.load
+             (
+                 // resource URL
+                 'assets/RED.obj',
+         
+                 // called when resource is loaded
+                 function ( object ) 
+                 {
+                     object.position.z += 1
+                     object.position.y -= 2
+                     scene.add(object);
+                 }, 
+                 onProgress, 
+                 onError
+             );
+         }
+     );
 
     scene.add(meshesVessel[0]);
 
