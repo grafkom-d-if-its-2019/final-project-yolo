@@ -1,6 +1,8 @@
 (function main(){
 
     //Add Scene
+    var path = [];
+
     var scene = new THREE.Scene();
     var meshes=[];
     var meshesVessel=[];
@@ -59,7 +61,9 @@
         'assets/PLATELET.obj',
         // called when resource is loaded
         function ( object ) {
-
+            object.position.set(100, 10, -20);
+            object.scale.set(0.85, 0.85, 0.85);  
+            // object.color.set(0xffff00);
             scene.add( object );
 
         },
@@ -106,6 +110,7 @@
     var arah_z = 1;
     
     //Render
+    generatePath();
     animate();
 
     function isCollision(){
@@ -135,9 +140,24 @@
         // }
 
         controls.update();
-        console.log(camera.position.x, camera.position.y, camera.position.z);
+        // console.log(camera.position.x, camera.position.y, camera.position.z);
         renderer.render( scene, camera );
         requestAnimationFrame( animate );
+    }
+
+    function generatePath()
+    {
+        var tt;
+        for(tt=0; tt<1000; tt++)
+        {
+            var t = tt/1000;
+            var tx = 15* (t*3-1.5);
+            var ty = 0;
+            var tz = Math.sin(2*Math.PI * t) *5;
+            var point = new THREE.Vector3(tx, ty, tz);
+            path.push(point);
+            // console.log(tx, ty, tz);
+        }
     }
 
 })();
