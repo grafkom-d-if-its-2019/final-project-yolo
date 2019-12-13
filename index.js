@@ -43,41 +43,151 @@
     sphere.geometry.normalsNeedUpdate = true; 
 
     whitebloodcell(19, meshes);
-    // limfositB(19, meshes);
+    limfositB(19, meshes);
     // limfositT(19, meshes);
     // redBloodCell(meshes);
-    bloodVessels(meshesVessel);
+    // bloodVessels(meshesVessel);
     // monosit(meshes);
     
     //TESTING
-    // platelet(meshes);
   
-    // instantiate a loader
-    var loader = new THREE.OBJLoader();
+    // Manager 
+    var manager = new THREE.LoadingManager();
+    manager.onProgress = function ( item, loaded, total ) {
+        console.log( item, loaded, total );
+    };
 
-    // load a resource
-    loader.load(
-        // resource URL
-        'assets/PLATELET.obj',
+    // Loaders
+    var loader = new THREE.OBJLoader(manager);
+    var matloader = new THREE.MTLLoader(manager);
+    var onProgress = function ( xhr ) {
+        if ( xhr.lengthComputable ) {
+            var percentComplete = xhr.loaded / xhr.total * 100;
+            console.log( Math.round( percentComplete, 2 ) + '% downloaded' );
+        }
+    };
+    var onError = function () { };
+
+    // // PLATELET LOAD
+    // matloader.load
+    // (
+    //     //Resource URL
+    //     'assets/PLATELET.mtl',
+
+    //     // called when resource is loaded
+    //     function ( material ) 
+    //     {
+    //         material.preload();
+
+    //         loader.setMaterials(material)
+
+    //         loader.load
+    //         (
+    //             // resource URL
+        
+    //             'assets/PLATELET.obj',
+        
+    //             // called when resource is loaded
+    //             function ( object ) 
+    //             {
+    //                 scene.add(object);
+    //             }, 
+    //             onProgress, 
+    //             onError
+    //         );
+    //     }
+    // );
+    
+    // // NEUTROFIL LOAD
+    // matloader.load
+    // (
+    //     //Resource URL
+    //     'assets/NEUTROFIL.mtl',
+
+
+    //     // called when resource is loaded
+    //     function ( material ) 
+    //     {
+    //         material.preload();
+
+    //         loader.setMaterials(material)
+
+    //         loader.load
+    //         (
+    //             // resource URL
+    //             'assets/NEUTROFIL.obj',
+        
+    //             // called when resource is loaded
+    //             function ( object ) 
+    //             {
+    //                 object.position.z += 1
+    //                 object.position.y -= 2
+    //                 scene.add(object);
+    //             }, 
+    //             onProgress, 
+    //             onError
+    //         );
+    //     }
+    // );
+
+    // // EOSINOFIL LOAD
+    // matloader.load
+    // (
+    //     //Resource URL
+    //     'assets/EOSINOFIL.mtl',
+
+    //     // called when resource is loaded
+    //     function ( material ) 
+    //     {
+    //         material.preload();
+
+    //         loader.setMaterials(material)
+
+    //         loader.load
+    //         (
+    //             // resource URL
+    //             'assets/EOSINOFIL.obj',
+        
+    //             // called when resource is loaded
+    //             function ( object ) 
+    //             {
+    //                 object.position.y -= 3
+    //                 scene.add(object);
+    //             }, 
+    //             onProgress, 
+    //             onError
+    //         );
+    //     }
+    // );
+
+    // MONOSIT LOAD
+    matloader.load
+    (
+        //Resource URL
+        'assets/MONOSIT.mtl',
+
         // called when resource is loaded
-        function ( object ) {
-            object.position.set(100, 10, -20);
-            object.scale.set(0.85, 0.85, 0.85);  
-            // object.color.set(0xffff00);
-            scene.add( object );
+        function ( material ) 
+        {
+            material.preload();
 
-        },
-        // called when loading is in progresses
-        function ( xhr ) {
+            loader.setMaterials(material)
 
-            console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
-
-        },
-        // called when loading has errors
-        function ( error ) {
-
-            console.log( 'An error happened' );
-
+            loader.load
+            (
+                // resource URL
+                'assets/MONOSIT.obj',
+        
+                // called when resource is loaded
+                function ( object ) 
+                {
+                    object.position.z += 1
+                    object.position.y -= 2
+                    scene.add(object);
+                }, 
+                onProgress, 
+                onError
+            );
         }
     );
 
@@ -112,22 +222,19 @@
     //Render
     generatePath();
     animate();
+    var raycaster = new THREE.Raycaster();
+    var mouse = new THREE.Vector2(), INTERSECTED;
+    var id = scene.getObjectById( 0, true );
+    var object = scene.getObjectByName( "sphere", true );
 
-    function isCollision(){
-        for (var vertexIndex = 0; vertexIndex < meshes[i].geometry.vertices.length; vertexIndex++)
-        {       
-            var localVertex = meshes[i].geometry.vertices[vertexIndex].clone();
-            var globalVertex = meshes[i].matrix.multiplyVector3(localVertex);
-            var directionVector = globalVertex.sub( meshes[i].position );
+    function onMouseDown( event ) {
 
-            var ray = new THREE.Raycaster( meshes[i].position, directionVector.clone().normalize() );
-            var collisionResults = ray.intersectObjects( meshesVessel );
-            if ( collisionResults.length > 0 && collisionResults[0].distance < directionVector.length() ) 
-            {
-                // a collision occurred... do something...
-                arah_z *= -1;
-            }
-        }
+        // calculate mouse position in normalized device coordinates
+        // (-1 to +1) for both components
+    
+        mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+        mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+    
     }
     
     function animate()
@@ -136,9 +243,42 @@
         // for(i=0; i<meshes.length; i++)
         // {
         //     meshes[i].position.x += 0.05;
+        //     for (var vertexIndex = 0; vertexIndex < meshes[i].geometry.vertices.length; vertexIndex++)
+        //     {       
+        //         var localVertex = meshes[i].geometry.vertices[vertexIndex].clone();
+        //         var globalVertex = meshes[i].matrix.multiplyVector3(localVertex);
+        //         var directionVector = globalVertex.sub( meshes[i].position );
+
+        //         var ray = new THREE.Raycaster( meshes[i].position, directionVector.clone().normalize() );
+        //         var collisionResults = ray.intersectObjects( meshesVessel );
+        //         if ( collisionResults.length > 0 && collisionResults[0].distance < directionVector.length() ) 
+        //         {
+        //             // a collision occurred... do something...
+        //             arah_z *= -1;
+        //         }
+        //     }
         //     meshes[i].position.z += 0.1*arah_z;
         // }
+        
+        // update the picking ray with the camera and mouse position
+        raycaster.setFromCamera( mouse, camera );
 
+        // calculate objects intersecting the picking ray
+        var intersects = raycaster.intersectObjects( scene.children, true );
+
+        if ( intersects.length > 0 ) {
+            if ( INTERSECTED != intersects[ 0 ].object ) {
+                if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
+                INTERSECTED = intersects[ 0 ].object;
+                INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
+                INTERSECTED.material.emissive.setHex( 0x00ff00 );
+            }
+        } else {
+            if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
+            INTERSECTED = null;
+        }
+
+        // console.log(scene.children[3].position.x);
         controls.update();
         // console.log(camera.position.x, camera.position.y, camera.position.z);
         renderer.render( scene, camera );
@@ -160,4 +300,6 @@
         }
     }
 
+    //Render
+    document.addEventListener( 'mousedown', onMouseDown, false );
 })();
