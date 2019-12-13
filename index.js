@@ -44,7 +44,7 @@
     // limfositB(19, meshes);
     // limfositT(19, meshes);
     // redBloodCell(meshes);
-    bloodVessels(meshesVessel);
+    // bloodVessels(meshesVessel);
     // monosit(meshes);
     
     //TESTING
@@ -96,12 +96,43 @@
     //     }
     // );
     
-    // NEUTROFIL LOAD
+    // // NEUTROFIL LOAD
+    // matloader.load
+    // (
+    //     //Resource URL
+    //     'assets/NEUTROFIL.mtl',
+
+
+    //     // called when resource is loaded
+    //     function ( material ) 
+    //     {
+    //         material.preload();
+
+    //         loader.setMaterials(material)
+
+    //         loader.load
+    //         (
+    //             // resource URL
+    //             'assets/NEUTROFIL.obj',
+        
+    //             // called when resource is loaded
+    //             function ( object ) 
+    //             {
+    //                 object.position.z += 1
+    //                 object.position.y -= 2
+    //                 scene.add(object);
+    //             }, 
+    //             onProgress, 
+    //             onError
+    //         );
+    //     }
+    // );
+
+    // EOSINOFIL LOAD
     matloader.load
     (
         //Resource URL
-        'assets/NEUTROFIL.mtl',
-
+        'assets/EOSINOFIL.mtl',
 
         // called when resource is loaded
         function ( material ) 
@@ -113,13 +144,12 @@
             loader.load
             (
                 // resource URL
-                'assets/NEUTROFIL.obj',
+                'assets/EOSINOFIL.obj',
         
                 // called when resource is loaded
                 function ( object ) 
                 {
-                    object.position.z += 1
-                    object.position.y -= 2
+                    object.position.y -= 3
                     scene.add(object);
                 }, 
                 onProgress, 
