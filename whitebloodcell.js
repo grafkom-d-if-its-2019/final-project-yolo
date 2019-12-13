@@ -30,10 +30,10 @@ function whitebloodcell(k, meshes){
     sphere.geometry.computeVertexNormals();
     sphere.geometry.normalsNeedUpdate = true;
 
-    // sphere.position.z = -40;
-    // sphere2.position.z = -40;
-    // sphere.position.x = -200;
-    // sphere2.position.x = -200;
+    // sphere.position.z = 22;
+    // sphere2.position.z = 22;
+    sphere.position.x = -200;
+    sphere2.position.x = -200;
 
     // scene.add(sphere, sphere2);
     meshes.push(sphere, sphere2);

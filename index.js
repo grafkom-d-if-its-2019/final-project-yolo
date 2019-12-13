@@ -41,10 +41,10 @@
     sphere.geometry.normalsNeedUpdate = true; 
 
     whitebloodcell(19, meshes);
-    // limfositB(19, meshes);
+    limfositB(19, meshes);
     // limfositT(19, meshes);
     // redBloodCell(meshes);
-    bloodVessels(meshesVessel);
+    // bloodVessels(meshesVessel);
     // monosit(meshes);
     
     //TESTING
@@ -104,25 +104,19 @@
 
     var center = new THREE.Vector3;
     var arah_z = 1;
+    var raycaster = new THREE.Raycaster();
+    var mouse = new THREE.Vector2(), INTERSECTED;
+    var id = scene.getObjectById( 0, true );
+    var object = scene.getObjectByName( "sphere", true );
+
+    function onMouseDown( event ) {
+
+        // calculate mouse position in normalized device coordinates
+        // (-1 to +1) for both components
     
-    //Render
-    animate();
-
-    function isCollision(){
-        for (var vertexIndex = 0; vertexIndex < meshes[i].geometry.vertices.length; vertexIndex++)
-        {       
-            var localVertex = meshes[i].geometry.vertices[vertexIndex].clone();
-            var globalVertex = meshes[i].matrix.multiplyVector3(localVertex);
-            var directionVector = globalVertex.sub( meshes[i].position );
-
-            var ray = new THREE.Raycaster( meshes[i].position, directionVector.clone().normalize() );
-            var collisionResults = ray.intersectObjects( meshesVessel );
-            if ( collisionResults.length > 0 && collisionResults[0].distance < directionVector.length() ) 
-            {
-                // a collision occurred... do something...
-                arah_z *= -1;
-            }
-        }
+        mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+        mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+    
     }
     
     function animate()
@@ -133,11 +127,33 @@
         //     meshes[i].position.x += 0.05;
         //     meshes[i].position.z += 0.1*arah_z;
         // }
+        
+        // update the picking ray with the camera and mouse position
+        raycaster.setFromCamera( mouse, camera );
 
+        // calculate objects intersecting the picking ray
+        var intersects = raycaster.intersectObjects( scene.children, true );
+
+        if ( intersects.length > 0 ) {
+            if ( INTERSECTED != intersects[ 0 ].object ) {
+                if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
+                INTERSECTED = intersects[ 0 ].object;
+                INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
+                INTERSECTED.material.emissive.setHex( 0x00ff00 );
+            }
+        } else {
+            if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
+            INTERSECTED = null;
+        }
+
+        // console.log(scene.children[3].position.x);
         controls.update();
-        console.log(camera.position.x, camera.position.y, camera.position.z);
+        // console.log(camera.position.x, camera.position.y, camera.position.z);
         renderer.render( scene, camera );
         requestAnimationFrame( animate );
     }
 
+    //Render
+    animate();
+    document.addEventListener( 'mousedown', onMouseDown, false );
 })();
