@@ -190,7 +190,7 @@
 
         controls.update();
 
-        console.log(scene.children[2].position.x);
+        // console.log(scene.children[6].position.z);
 
         // console.log(camera.position.x, camera.position.y, camera.position.z);
         renderer.render( scene, camera );
