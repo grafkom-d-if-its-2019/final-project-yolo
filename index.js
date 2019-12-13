@@ -92,7 +92,10 @@
         else if(index == 4){
             my_loader('assets/PLATELET.mtl', 'assets/PLATELET.obj', index);
         }
-        else if(index==5)
+        else if(index == 5){
+            my_loader('assets/MAKROFAG.mtl', 'assets/MAKROFAG.obj', index);
+        }
+        else if(index==6)
         {
             var timer = new Date();
             end = timer.getTime();
