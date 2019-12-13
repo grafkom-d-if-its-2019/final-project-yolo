@@ -40,11 +40,11 @@
     sphere.geometry.computeVertexNormals();
     sphere.geometry.normalsNeedUpdate = true; 
 
-    // whitebloodcell(19, meshes);
+    whitebloodcell(19, meshes);
     // limfositB(19, meshes);
     // limfositT(19, meshes);
     // redBloodCell(meshes);
-    // bloodVessels(meshes);
+    bloodVessels(meshesVessel);
     // monosit(meshes);
     
     //TESTING
@@ -77,8 +77,6 @@
         }
     );
 
-
-
     scene.add(meshesVessel[0]);
 
     var i;
@@ -109,35 +107,35 @@
     
     //Render
     animate();
+
+    function isCollision(){
+        for (var vertexIndex = 0; vertexIndex < meshes[i].geometry.vertices.length; vertexIndex++)
+        {       
+            var localVertex = meshes[i].geometry.vertices[vertexIndex].clone();
+            var globalVertex = meshes[i].matrix.multiplyVector3(localVertex);
+            var directionVector = globalVertex.sub( meshes[i].position );
+
+            var ray = new THREE.Raycaster( meshes[i].position, directionVector.clone().normalize() );
+            var collisionResults = ray.intersectObjects( meshesVessel );
+            if ( collisionResults.length > 0 && collisionResults[0].distance < directionVector.length() ) 
+            {
+                // a collision occurred... do something...
+                arah_z *= -1;
+            }
+        }
+    }
     
     function animate()
     {
-        var i;
-        for(i=0; i<meshes.length; i++)
-        {
-            meshes[i].position.x += 0.05;
-            for (var vertexIndex = 0; vertexIndex < meshes[i].geometry.vertices.length; vertexIndex++)
-            {       
-                var localVertex = meshes[i].geometry.vertices[vertexIndex].clone();
-                var globalVertex = meshes[i].matrix.multiplyVector3(localVertex);
-                var directionVector = globalVertex.sub( meshes[i].position );
+        // var i;
+        // for(i=0; i<meshes.length; i++)
+        // {
+        //     meshes[i].position.x += 0.05;
+        //     meshes[i].position.z += 0.1*arah_z;
+        // }
 
-                var ray = new THREE.Raycaster( meshes[i].position, directionVector.clone().normalize() );
-                var collisionResults = ray.intersectObjects( meshesVessel );
-                if ( collisionResults.length > 0 && collisionResults[0].distance < directionVector.length() ) 
-                {
-                    // a collision occurred... do something...
-                    arah_z *= -1;
-                }
-            }
-            meshes[i].position.z += 0.1*arah_z;
-        }
-        // console.log(center.distanceTo(camera.position));
-        // if(center.distanceTo(camera.position) <= 5)
-        //     outerwall.material.side = THREE.DoubleSide;
-        // else if (center.distanceTo(camera.position) > 5)
-        //     outerwall.material.side = THREE.FrontSide;
         controls.update();
+        console.log(camera.position.x, camera.position.y, camera.position.z);
         renderer.render( scene, camera );
         requestAnimationFrame( animate );
     }
