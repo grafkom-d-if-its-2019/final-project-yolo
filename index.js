@@ -48,35 +48,85 @@
     // monosit(meshes);
     
     //TESTING
-    // platelet(meshes);
   
-    // instantiate a loader
-    var loader = new THREE.OBJLoader();
+    // Manager 
+    var manager = new THREE.LoadingManager();
+    manager.onProgress = function ( item, loaded, total ) {
+        console.log( item, loaded, total );
+    };
 
-    // load a resource
-    loader.load(
-        // resource URL
-        'assets/PLATELET.obj',
+    // Loaders
+    var loader = new THREE.OBJLoader(manager);
+    var matloader = new THREE.MTLLoader(manager);
+    var onProgress = function ( xhr ) {
+        if ( xhr.lengthComputable ) {
+            var percentComplete = xhr.loaded / xhr.total * 100;
+            console.log( Math.round( percentComplete, 2 ) + '% downloaded' );
+        }
+    };
+    var onError = function () { };
+
+    // // PLATELET LOAD
+    // matloader.load
+    // (
+    //     //Resource URL
+    //     'assets/PLATELET.mtl',
+
+    //     // called when resource is loaded
+    //     function ( material ) 
+    //     {
+    //         material.preload();
+
+    //         loader.setMaterials(material)
+
+    //         loader.load
+    //         (
+    //             // resource URL
+        
+    //             'assets/PLATELET.obj',
+        
+    //             // called when resource is loaded
+    //             function ( object ) 
+    //             {
+    //                 scene.add(object);
+    //             }, 
+    //             onProgress, 
+    //             onError
+    //         );
+    //     }
+    // );
+    
+    // NEUTROFIL LOAD
+    matloader.load
+    (
+        //Resource URL
+        'assets/NEUTROFIL.mtl',
+
+
         // called when resource is loaded
-        function ( object ) {
+        function ( material ) 
+        {
+            material.preload();
 
-            scene.add( object );
+            loader.setMaterials(material)
 
-        },
-        // called when loading is in progresses
-        function ( xhr ) {
-
-            console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
-
-        },
-        // called when loading has errors
-        function ( error ) {
-
-            console.log( 'An error happened' );
-
+            loader.load
+            (
+                // resource URL
+                'assets/NEUTROFIL.obj',
+        
+                // called when resource is loaded
+                function ( object ) 
+                {
+                    object.position.z += 1
+                    object.position.y -= 2
+                    scene.add(object);
+                }, 
+                onProgress, 
+                onError
+            );
         }
     );
-
 
 
     scene.add(meshesVessel[0]);
@@ -112,26 +162,26 @@
     
     function animate()
     {
-        var i;
-        for(i=0; i<meshes.length; i++)
-        {
-            meshes[i].position.x += 0.05;
-            for (var vertexIndex = 0; vertexIndex < meshes[i].geometry.vertices.length; vertexIndex++)
-            {       
-                var localVertex = meshes[i].geometry.vertices[vertexIndex].clone();
-                var globalVertex = meshes[i].matrix.multiplyVector3(localVertex);
-                var directionVector = globalVertex.sub( meshes[i].position );
+        // var i;
+        // for(i=0; i<meshes.length; i++)
+        // {
+        //     meshes[i].position.x += 0.05;
+        //     for (var vertexIndex = 0; vertexIndex < meshes[i].geometry.vertices.length; vertexIndex++)
+        //     {       
+        //         var localVertex = meshes[i].geometry.vertices[vertexIndex].clone();
+        //         var globalVertex = meshes[i].matrix.multiplyVector3(localVertex);
+        //         var directionVector = globalVertex.sub( meshes[i].position );
 
-                var ray = new THREE.Raycaster( meshes[i].position, directionVector.clone().normalize() );
-                var collisionResults = ray.intersectObjects( meshesVessel );
-                if ( collisionResults.length > 0 && collisionResults[0].distance < directionVector.length() ) 
-                {
-                    // a collision occurred... do something...
-                    arah_z *= -1;
-                }
-            }
-            meshes[i].position.z += 0.1*arah_z;
-        }
+        //         var ray = new THREE.Raycaster( meshes[i].position, directionVector.clone().normalize() );
+        //         var collisionResults = ray.intersectObjects( meshesVessel );
+        //         if ( collisionResults.length > 0 && collisionResults[0].distance < directionVector.length() ) 
+        //         {
+        //             // a collision occurred... do something...
+        //             arah_z *= -1;
+        //         }
+        //     }
+        //     meshes[i].position.z += 0.1*arah_z;
+        // }
         // console.log(center.distanceTo(camera.position));
         // if(center.distanceTo(camera.position) <= 5)
         //     outerwall.material.side = THREE.DoubleSide;
