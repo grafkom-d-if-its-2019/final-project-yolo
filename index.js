@@ -104,6 +104,7 @@
             {
                 scene.add(meshes[i]);
             }
+            main();
         }
     }
 
@@ -152,8 +153,6 @@
     var center = new THREE.Vector3;
     var arah_z = 1;
 
-    glUtils.SL.init({ callback: function() { main(); }});
-
     function onMouseDown( event ) {
 
         // calculate mouse position in normalized device coordinates
@@ -165,7 +164,6 @@
     }
 
     document.addEventListener( 'mousedown', onMouseDown, false );
-    var go=1;
 
     function animate()
     {
@@ -192,17 +190,13 @@
 
         controls.update();
 
-        // console.log(scene.children[1]);
+        console.log(scene.children[2].position.x);
 
-        if(go)
-        {
-            go=0;
-        }
         // console.log(camera.position.x, camera.position.y, camera.position.z);
         renderer.render( scene, camera );
         requestAnimationFrame( animate );
     }
-    setTimeout (animate, 1000);
+    setTimeout (animate, 6000);
 
     function generatePath()
     {
