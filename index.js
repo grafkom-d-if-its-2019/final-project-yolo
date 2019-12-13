@@ -3,6 +3,7 @@
     //Add Scene
     var scene = new THREE.Scene();
     var meshes=[];
+    var meshesVessel=[];
     // scene.background = new THREE.TextureLoader().load('assets/white.jpg');
     scene.background = new THREE.Color(0x000000)
 
@@ -14,8 +15,8 @@
 
     //Controls
     var controls = new THREE.OrbitControls( camera, renderer.domElement );
-    // camera.position.set(92.83968629417194, 9.610419921941201, -36.24130899572845);
-    camera.position.set(0, 0, 15);
+    camera.position.set(92.83968629417194, 9.610419921941201, -36.24130899572845);
+    // camera.position.set(0, 0, 15);
     camera.lookAt(0,0,0);
     controls.update();
 
@@ -45,8 +46,9 @@
     // redBloodCell(meshes);
     // bloodVessels(meshes);
     monosit(meshes);
+    bloodVessels(meshesVessel);
 
-    // scene.add(sphere);
+    scene.add(meshesVessel[0]);
 
     var i;
     for(i=0; i<meshes.length; i++)
@@ -72,20 +74,41 @@
     spotLight.target = camera;
 
     var center = new THREE.Vector3;
+    var arah_z = 1;
     
     //Render
     animate();
     
     function animate()
     {
+        var i;
+        for(i=0; i<meshes.length; i++)
+        {
+            meshes[i].position.x += 0.05;
+            for (var vertexIndex = 0; vertexIndex < meshes[i].geometry.vertices.length; vertexIndex++)
+            {       
+                var localVertex = meshes[i].geometry.vertices[vertexIndex].clone();
+                var globalVertex = meshes[i].matrix.multiplyVector3(localVertex);
+                var directionVector = globalVertex.sub( meshes[i].position );
+
+                var ray = new THREE.Raycaster( meshes[i].position, directionVector.clone().normalize() );
+                var collisionResults = ray.intersectObjects( meshesVessel );
+                if ( collisionResults.length > 0 && collisionResults[0].distance < directionVector.length() ) 
+                {
+                    // a collision occurred... do something...
+                    arah_z *= -1;
+                }
+            }
+            meshes[i].position.z += 0.1*arah_z;
+        }
         // console.log(center.distanceTo(camera.position));
-        requestAnimationFrame( animate );
         // if(center.distanceTo(camera.position) <= 5)
         //     outerwall.material.side = THREE.DoubleSide;
         // else if (center.distanceTo(camera.position) > 5)
         //     outerwall.material.side = THREE.FrontSide;
         controls.update();
         renderer.render( scene, camera );
+        requestAnimationFrame( animate );
     }
 
 })();
