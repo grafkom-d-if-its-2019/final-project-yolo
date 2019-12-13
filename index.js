@@ -74,24 +74,39 @@
 
     var objects = []
 
-    //         loader.load
-    //         (
-    //             // resource URL
-        
-    //             'assets/PLATELET.obj',
-        
-    //             // called when resource is loaded
-    //             function ( object ) 
-    //             {
-    //                 scene.add(object);
-    //             }, 
-    //             onProgress, 
-    //             onError
-    //         );
-    //     }
-    // );
+     // PLATELET LOAD
+     matloader.load
+     (
+         //Resource URL
+         'assets/PLATELET.mtl',
+ 
+ 
+         // called when resource is loaded
+         function ( material ) 
+         {
+             material.preload();
+ 
+             loader.setMaterials(material)
+ 
+             loader.load
+             (
+                 // resource URL
+                 'assets/PLATELET.obj',
+         
+                 // called when resource is loaded
+                 function ( object ) 
+                 {
+                     object.position.z += 1
+                     object.position.y -= 2
+                     scene.add(object);
+                 }, 
+                 onProgress, 
+                 onError
+             );
+         }
+     );
     
-    // // NEUTROFIL LOAD
+    // // NEUTROFIL LOAD (NEW)
     // matloader.load
     // (
     //     //Resource URL
@@ -123,7 +138,7 @@
     //     }
     // );
 
-    // // EOSINOFIL LOAD
+    // // EOSINOFIL LOAD (NEW)
     // matloader.load
     // (
     //     //Resource URL
@@ -153,7 +168,7 @@
     //     }
     // );
 
-    // // MONOSIT LOAD
+    // // MONOSIT LOAD (NEW)
     // matloader.load
     // (
     //     //Resource URL
@@ -184,36 +199,36 @@
     //     }
     // );
 
-     // BASOFIL LOAD
-     matloader.load
-     (
-         //Resource URL
-         'assets/BASOFIL.mtl',
+    //  // BASOFIL LOAD (NEW)
+    //  matloader.load
+    //  (
+    //      //Resource URL
+    //      'assets/BASOFIL.mtl',
  
-         // called when resource is loaded
-         function ( material ) 
-         {
-             material.preload();
+    //      // called when resource is loaded
+    //      function ( material ) 
+    //      {
+    //          material.preload();
  
-             loader.setMaterials(material)
+    //          loader.setMaterials(material)
  
-             loader.load
-             (
-                 // resource URL
-                 'assets/BASOFIL.obj',
+    //          loader.load
+    //          (
+    //              // resource URL
+    //              'assets/BASOFIL.obj',
          
-                 // called when resource is loaded
-                 function ( object ) 
-                 {
-                     object.position.z += 1
-                     object.position.y -= 2
-                     scene.add(object);
-                 }, 
-                 onProgress, 
-                 onError
-             );
-         }
-     );
+    //              // called when resource is loaded
+    //              function ( object ) 
+    //              {
+    //                  object.position.z += 1
+    //                  object.position.y -= 2
+    //                  scene.add(object);
+    //              }, 
+    //              onProgress, 
+    //              onError
+    //          );
+    //      }
+    //  );
 
     scene.add(meshesVessel[0]);
 
@@ -304,7 +319,7 @@
         // }
 
         // console.log("masuk animate");
-        scene.children[1].rotation.x+=0.1;
+        // scene.children[1].rotation.x+=0.1;
 
         controls.update();
 
