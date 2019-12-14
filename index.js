@@ -301,6 +301,7 @@
         // calculate objects intersecting the picking ray
         var intersects = raycaster.intersectObjects( meshes, true );
         console.log(intersects);
+        play();
         if (intersects[0].object.name == 'Cylinder_Cylinder_Material.028')
         {
             console.log('Red Blood Cell')
