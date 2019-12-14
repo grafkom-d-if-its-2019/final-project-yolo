@@ -139,7 +139,7 @@
                         {
                             object.position.set(0,0,0);
                         }
-                        // object.position.z += 10*index;
+                        object.position.z += 10*index;
                         // object.position.y -= 2;
                         meshes.push(object);
                         // scene.add(object);
