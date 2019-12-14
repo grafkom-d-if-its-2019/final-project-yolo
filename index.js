@@ -17,8 +17,8 @@
 
     //Controls
     var controls = new THREE.OrbitControls( camera, renderer.domElement );
-    camera.position.set(92.83968629417194, 9.610419921941201, -36.24130899572845);
-    // camera.position.set(0, 0, 15);
+    // camera.position.set(92.83968629417194, 9.610419921941201, -36.24130899572845);
+    camera.position.set(0, 0, 15);
     camera.lookAt(0,0,0);
     controls.update();
 
@@ -88,12 +88,12 @@
             my_loader('assets/NEUTROFIL.mtl', 'assets/NEUTROFIL.obj', index);
         }
         else if(index == 4){
-            my_loader('assets/PLATELET.mtl', 'assets/PLATELET.obj', index);
+            my_loader('assets/LIMFOSITT.mtl', 'assets/LIMFOSITT.obj', index);
         }
-        else if(index == 5){
-            my_loader('assets/MAKROFAG.mtl', 'assets/MAKROFAG.obj', index);
-        }
-        else if(index==6)
+        // else if(index == 5){
+        //     my_loader('assets/MAKROFAG.mtl', 'assets/MAKROFAG.obj', index);
+        // }
+        else if(index==5)
         {
             var timer = new Date();
             end = timer.getTime();
@@ -134,6 +134,11 @@
                     // called when resource is loaded
                     function ( object ) 
                     {
+
+                        if(index == 4)
+                        {
+                            object.position.set(0,0,0);
+                        }
                         object.position.z += 10*index;
                         // object.position.y -= 2;
                         var object2 = object.clone();
