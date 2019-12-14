@@ -129,7 +129,7 @@
                 else if(i == 1){
                     meshes.push(objects[i]);
                     scene.add(objects[i]);
-                    for(var j=0; j<1; j++){
+                    for(var j=0; j<2; j++){
                         var object = objects[i].clone();
                         meshes.push(object);
                         scene.add(object);
@@ -139,7 +139,7 @@
                 else if(i == 2){
                     meshes.push(objects[i]);
                     scene.add(objects[i]);
-                    for(var j=0; j<2; j++){
+                    for(var j=0; j<4; j++){
                         var object = objects[i].clone();
                         meshes.push(object);
                         scene.add(object);
@@ -149,7 +149,7 @@
                 else if(i == 3){
                     meshes.push(objects[i]);
                     scene.add(objects[i]);
-                    for(var j=0; j<3; j++){
+                    for(var j=0; j<5; j++){
                         var object = objects[i].clone();
                         meshes.push(object);
                         scene.add(object);
@@ -159,7 +159,7 @@
                 else if(i == 4){
                     meshes.push(objects[i]);
                     scene.add(objects[i]);
-                    for(var j=0; j<3; j++){
+                    for(var j=0; j<5; j++){
                         var object = objects[i].clone();
                         meshes.push(object);
                         scene.add(object);
@@ -169,7 +169,7 @@
                 else if(i == 5){
                     meshes.push(objects[i]);
                     scene.add(objects[i]);
-                    for(var j=0; j<3; j++){
+                    for(var j=0; j<6; j++){
                         var object = objects[i].clone();
                         meshes.push(object);
                         scene.add(object);
@@ -179,7 +179,7 @@
                 else if(i == 6){
                     meshes.push(objects[i]);
                     scene.add(objects[i]);
-                    for(var j=0; j<10; j++){
+                    for(var j=0; j<20; j++){
                         var object = objects[i].clone();
                         meshes.push(object);
                         scene.add(object);
@@ -189,7 +189,7 @@
                 else if(i == 7){
                     meshes.push(objects[i]);
                     scene.add(objects[i]);
-                    for(var j=0; j<3; j++){
+                    for(var j=0; j<6; j++){
                         var object = objects[i].clone();
                         meshes.push(object);
                         scene.add(object);
