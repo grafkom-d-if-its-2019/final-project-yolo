@@ -104,7 +104,6 @@
         }
         else if(jenis == 9)
         {
-            sound_loader('soundeffect/heartbeat.mp3');
             var timer = new Date();
             end = timer.getTime();
             // var diff = start - end;
@@ -370,17 +369,22 @@
         //     INTERSECTED = null;
         // }
     }
+    var f = true;
     function onMouseUp( event ) {
 
         // calculate mouse position in normalized device coordinates
         // (-1 to +1) for both components
         mouse.x = null;
         mouse.y = null;
-        INTERSECTED.material.emissive.setHex( 0x000000 );
+        if(f)
+        {
+            sound_loader('soundeffect/heartbeat.mp3');
+            f = false;
+        }
     }
 
     document.addEventListener( 'mousedown', onMouseDown, false );
-    // document.addEventListener( 'mouseup', onMouseUp, false );
+    document.addEventListener( 'mouseup', onMouseUp, false );
 
     var path_index=0;
     function animate()
