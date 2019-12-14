@@ -1,5 +1,6 @@
 function main()
 {
+    var scene;
     const renderer = new THREE.WebGLRenderer();
     const loader = new THREE.OBJLoader();
     const matloader = new THREE.MTLLoader();
@@ -13,13 +14,10 @@ function main()
     var start_index = [];
     var overview = true;
 
-    var a = new THREE.Vector3(-5, 10, 0);
-    var b = new THREE.Vector3(-5, 6, 0);
-    var c = new THREE.Vector3(-8, 8, 0);
-
-    var tri = new THREE.Triangle(a,b,c);
-    var material = new THREE.MeshPhongMaterial({color: 0xffffff});
-    var back = new THREE.Mesh(tri, material);
+    var spriteMap = new THREE.TextureLoader().load( "assets/back.jpg" );
+    var spriteMaterial = new THREE.SpriteMaterial( { map: spriteMap } );
+    var sprite = new THREE.Sprite( spriteMaterial );
+    sprite.position.set(-14.5, 6, 0);
 
     document.body.appendChild( renderer.domElement );
     var meshesVessels = [];
@@ -29,6 +27,106 @@ function main()
     var objects = [];
     var meshes = [];
     var index = 0;
+
+    function generateMesh()
+    {
+        for(var i=0; i<objects.length; i++)
+        {
+            var j;
+            // Red Blood Cell
+            if(i == 0)
+            {
+                meshes.push(objects[i]);
+                // sceneInfo.scene.add(objects[i]);
+                for(var j=0; j<100; j++){
+                    var object = objects[i].clone();
+                    meshes.push(object);
+                    // sceneInfo.scene.add(object);
+                }
+            }
+            // Basofil
+            else if(i == 1){
+                meshes.push(objects[i]);
+                // sceneInfo.scene.add(objects[i]);
+                for(var j=0; j<2; j++){
+                    var object = objects[i].clone();
+                    meshes.push(object);
+                    // sceneInfo.scene.add(object);
+                }
+            }
+            // Eosinofil
+            else if(i == 2){
+                meshes.push(objects[i]);
+                // sceneInfo.scene.add(objects[i]);
+                for(var j=0; j<4; j++){
+                    var object = objects[i].clone();
+                    meshes.push(object);
+                    // sceneInfo.scene.add(object);
+                }
+            }
+            // Limfosit B
+            else if(i == 3){
+                meshes.push(objects[i]);
+                // sceneInfo.scene.add(objects[i]);
+                for(var j=0; j<5; j++){
+                    var object = objects[i].clone();
+                    meshes.push(object);
+                    // sceneInfo.scene.add(object);
+                }
+            }
+            // Limfosit T
+            else if(i == 4){
+                meshes.push(objects[i]);
+                // sceneInfo.scene.add(objects[i]);
+
+                for(var j=0; j<5; j++){
+                    var object = objects[i].clone();
+                    meshes.push(object);
+                    // sceneInfo.scene.add(object);
+                }
+            }
+            // Monosit
+            else if(i == 5){
+                meshes.push(objects[i]);
+                // sceneInfo.scene.add(objects[i]);
+                for(var j=0; j<6; j++){
+                    var object = objects[i].clone();
+                    meshes.push(object);
+                    // sceneInfo.scene.add(object);
+                }
+            }
+            // Neutrofil
+            else if(i == 6){
+                meshes.push(objects[i]);
+                // sceneInfo.scene.add(objects[i]);
+                for(var j=0; j<20; j++){
+                    var object = objects[i].clone();
+                    meshes.push(object);
+                    // sceneInfo.scene.add(object);
+                }
+            }
+            // Makrofag
+            else if(i == 7){
+                meshes.push(objects[i]);
+                // sceneInfo.scene.add(objects[i]);
+                for(var j=0; j<6; j++){
+                    var object = objects[i].clone();
+                    meshes.push(object);
+                    // sceneInfo.scene.add(object);
+                }
+            }
+            // Platelet
+            else if(i == 8){
+                meshes.push(objects[i]);
+                // sceneInfo.scene.add(objects[i]);
+                for(var j=0; j<30; j++){
+                    var object = objects[i].clone();
+                    meshes.push(object);
+                    // sceneInfo.scene.add(object);
+                }
+            }
+        }
+    }
 
     function generatePath()
     {
@@ -97,9 +195,11 @@ function main()
         }
         else if(index == 9)
         {
+            generateMesh()
             setupOverviewScene();
             generatePath();
             generateCenterPath();
+            console.log(path)
             render2();
         }
     }
@@ -183,24 +283,26 @@ function main()
     my_loader('assets/RED.mtl', 'assets/RED.obj', index);
 
     function makeScene() {
-        const scene = new THREE.Scene();
+        scene = new THREE.Scene();
         scene.background = new THREE.Color(0x000000);
-        const camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 3, 1000 );
+        var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 3, 1000 );
         camera.position.set(0, 0, 10);
         camera.lookAt(0, 0, 0);
         {
-            const color = 0xFFFFFF;
-            const intensity = 1;
-            const light = new THREE.DirectionalLight(color, intensity);
+            var color = 0xFFFFFF;
+            var intensity = 1;
+            var light = new THREE.DirectionalLight(color, intensity);
             light.position.set(0, 2, 4);
             camera.add(light);
         }
-    
-        return {scene, camera};
+        
+        scene.add( sprite );
+        
+        return {scene, camera };
     }
 
     function makeSceneOverview() {
-        var scene = new THREE.Scene();
+        scene = new THREE.Scene();
         scene.background = new THREE.Color(0x000000)
 
         var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 3, 1000 );
@@ -230,102 +332,6 @@ function main()
     {
         sceneOverview = makeSceneOverview();
 
-        for(var i=0; i<objects.length; i++)
-        {
-            var j;
-            // Red Blood Cell
-            if(i == 0)
-            {
-                meshes.push(objects[i]);
-                // sceneInfo.scene.add(objects[i]);
-                for(var j=0; j<100; j++){
-                    var object = objects[i].clone();
-                    meshes.push(object);
-                    // sceneInfo.scene.add(object);
-                }
-            }
-            // Basofil
-            else if(i == 1){
-                meshes.push(objects[i]);
-                // sceneInfo.scene.add(objects[i]);
-                for(var j=0; j<2; j++){
-                    var object = objects[i].clone();
-                    meshes.push(object);
-                    // sceneInfo.scene.add(object);
-                }
-            }
-            // Eosinofil
-            else if(i == 2){
-                meshes.push(objects[i]);
-                // sceneInfo.scene.add(objects[i]);
-                for(var j=0; j<4; j++){
-                    var object = objects[i].clone();
-                    meshes.push(object);
-                    // sceneInfo.scene.add(object);
-                }
-            }
-            // Limfosit B
-            else if(i == 3){
-                meshes.push(objects[i]);
-                // sceneInfo.scene.add(objects[i]);
-                for(var j=0; j<5; j++){
-                    var object = objects[i].clone();
-                    meshes.push(object);
-                    // sceneInfo.scene.add(object);
-                }
-            }
-            // Limfosit T
-            else if(i == 4){
-                meshes.push(objects[i]);
-                // sceneInfo.scene.add(objects[i]);
-                for(var j=0; j<5; j++){
-                    var object = objects[i].clone();
-                    meshes.push(object);
-                    // sceneInfo.scene.add(object);
-                }
-            }
-            // Monosit
-            else if(i == 5){
-                meshes.push(objects[i]);
-                // sceneInfo.scene.add(objects[i]);
-                for(var j=0; j<6; j++){
-                    var object = objects[i].clone();
-                    meshes.push(object);
-                    // sceneInfo.scene.add(object);
-                }
-            }
-            // Neutrofil
-            else if(i == 6){
-                meshes.push(objects[i]);
-                // sceneInfo.scene.add(objects[i]);
-                for(var j=0; j<20; j++){
-                    var object = objects[i].clone();
-                    meshes.push(object);
-                    // sceneInfo.scene.add(object);
-                }
-            }
-            // Makrofag
-            else if(i == 7){
-                meshes.push(objects[i]);
-                // sceneInfo.scene.add(objects[i]);
-                for(var j=0; j<6; j++){
-                    var object = objects[i].clone();
-                    meshes.push(object);
-                    // sceneInfo.scene.add(object);
-                }
-            }
-            // Platelet
-            else if(i == 8){
-                meshes.push(objects[i]);
-                // sceneInfo.scene.add(objects[i]);
-                for(var j=0; j<30; j++){
-                    var object = objects[i].clone();
-                    meshes.push(object);
-                    // sceneInfo.scene.add(object);
-                }
-            }
-        }
-
         for(i=0; i<meshes.length; i++)
         {
             sceneOverview.scene.add(meshes[i]);
@@ -344,9 +350,21 @@ function main()
     {
         const sceneInfo = makeScene();
         const object = objects[cell];
-        object.position.set(0,0,0);
+        object.position.set(-5,0,0);
+        var controls = new THREE.ObjectControls(sceneInfo.camera, renderer.domElement, object);
+        controls.setDistance(8, 200); // set min - max distance for zoom
+
+        controls.setZoomSpeed(0); // set zoom speed
+        controls.enableVerticalRotation(); // enables the vertical rotation, see also disableVerticalRotation(), enableHorizontalRotation(), disableHorizontalRotation()
+        controls.enableHorizontalRotation();
+        controls.setMaxVerticalRotationAngle(Math.PI / 4, Math.PI / 4); // sets a max angle value for the rotation of the object, see also setMaxHorizontalRotationAngle(R,R)
+        controls.disableMaxHorizontalAngleRotation()// disables rotation angle limits for horizontal rotation, see also disableMaxVerticalAngleRotation()
+        controls.setRotationSpeed(0.1); // sets a new rotation speed for desktop, see also setRotationSpeedTouchDevices(value)
+
         sceneInfo.scene.add(object);
         sceneInfo.object = object;
+        sceneOverview.camera.lookAt(-5,0,0);
+
         // sceneInfo.scene.add(back);
         sceneInfo.scene.add(sceneInfo.camera);
 
@@ -429,16 +447,22 @@ function main()
             {
                 console.log('Platelet')
                 sceneOverview = setupScene(8)
-                overview = false
+                overview = false;
                 render();
             }
+        }
+        else 
+        {
+            setupOverviewScene();
+            overview = true;
+            render2();
+            
         }
     }
 
     document.addEventListener( 'mousedown', onMouseDown, false );
 
     function renderSceneInfo(sceneInfo) {  
-        // sceneInfo.scene.children[1].rotation.z+=0.01;
         renderer.render(sceneInfo.scene, sceneInfo.camera);
     }
 
@@ -447,7 +471,7 @@ function main()
         if(overview)
         {
             const {scene, camera} = sceneOverview;
-            // console.log(scene);
+            // console.log(path.x);
             var j;
             for (j=0; j<meshes.length; j++){
                 if(j >148 && j <156){
@@ -485,10 +509,8 @@ function main()
     
             sceneOverview.object.rotation.z +=0.001;
             renderSceneInfo(sceneOverview);
-    
-            t++;
-            t%=900;
-        
+            
+            console.log(path)
             requestAnimationFrame(render);
         }
     }
