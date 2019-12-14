@@ -13,10 +13,6 @@ function main()
     var start_index = [];
     var overview = true;
 
-    var a = new THREE.Vector3(-5, 10, 0);
-    var b = new THREE.Vector3(-5, 6, 0);
-    var c = new THREE.Vector3(-8, 8, 0);
-
     var spriteMap = new THREE.TextureLoader().load( "assets/back.jpg" );
     var spriteMaterial = new THREE.SpriteMaterial( { map: spriteMap } );
     var sprite = new THREE.Sprite( spriteMaterial );
@@ -188,7 +184,6 @@ function main()
         const scene = new THREE.Scene();
         scene.background = new THREE.Color(0x000000);
         const camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 3, 1000 );
-        var controls = new THREE.OrbitControls( camera, renderer.domElement );
         camera.position.set(0, 0, 10);
         camera.lookAt(0, 0, 0);
         {
@@ -201,7 +196,7 @@ function main()
         
         scene.add( sprite );
         
-        return {scene, camera, controls};
+        return {scene, camera };
     }
 
     function makeSceneOverview() {
@@ -350,10 +345,18 @@ function main()
         const sceneInfo = makeScene();
         const object = objects[cell];
         object.position.set(-5,0,0);
+        var controls = new THREE.ObjectControls(sceneInfo.camera, renderer.domElement, object);
+        controls.setDistance(8, 200); // set min - max distance for zoom
+
+        controls.setZoomSpeed(0); // set zoom speed
+        controls.enableVerticalRotation(); // enables the vertical rotation, see also disableVerticalRotation(), enableHorizontalRotation(), disableHorizontalRotation()
+        controls.setMaxVerticalRotationAngle(Math.PI / 4, Math.PI / 4); // sets a max angle value for the rotation of the object, see also setMaxHorizontalRotationAngle(R,R)
+        controls.disableMaxHorizontalAngleRotation()// disables rotation angle limits for horizontal rotation, see also disableMaxVerticalAngleRotation()
+        controls.setRotationSpeed(0.05); // sets a new rotation speed for desktop, see also setRotationSpeedTouchDevices(value)
+
         sceneInfo.scene.add(object);
         sceneInfo.object = object;
         sceneOverview.camera.lookAt(-5,0,0);
-        console.log(sceneOverview.camera.lookAt);
 
         // sceneInfo.scene.add(back);
         sceneInfo.scene.add(sceneInfo.camera);
@@ -446,7 +449,6 @@ function main()
     document.addEventListener( 'mousedown', onMouseDown, false );
 
     function renderSceneInfo(sceneInfo) {  
-        // sceneInfo.scene.children[1].rotation.z+=0.01;
         renderer.render(sceneInfo.scene, sceneInfo.camera);
     }
 
@@ -493,8 +495,7 @@ function main()
     
             sceneOverview.object.rotation.z +=0.001;
             renderSceneInfo(sceneOverview);
-            sceneOverview.controls.update();
-        
+            
             requestAnimationFrame(render);
         }
     }
