@@ -27,7 +27,7 @@
     var bump = new THREE.TextureLoader().load('assets/bumpmap.jpg');
 
     var geometry = new THREE.SphereGeometry(2, 31, 32);
-    var material =  new THREE.MeshPhongMaterial({
+    var material =  new THREE.MeshLambertMaterial({
         color:0xff0000,
         // bumpMap: bump
     })
@@ -60,8 +60,8 @@
     };
 
     // Loaders
-    var loader = new THREE.OBJLoader(manager);
     var matloader = new THREE.MTLLoader(manager);
+    var loader = new THREE.OBJLoader(manager);
     var onProgress = function a ( xhr ) {
         if ( xhr.lengthComputable ) {
             var percentComplete = xhr.loaded / xhr.total * 100;
@@ -300,18 +300,56 @@
 
         // calculate objects intersecting the picking ray
         var intersects = raycaster.intersectObjects( meshes, true );
-
-        if ( intersects.length > 0 ) {
-            if ( INTERSECTED != intersects[ 0 ].object ) {
-                if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
-                INTERSECTED = intersects[ 0 ].object;
-                INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
-                INTERSECTED.material.emissive.setHex( 0x00ff00 );
-            }
-        } else {
-            if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
-            INTERSECTED = null;
+        console.log(intersects);
+        play();
+        if (intersects[0].object.name == 'Cylinder_Cylinder_Material.028')
+        {
+            console.log('Red Blood Cell')
         }
+        else if (intersects[0].object.name == 'Sphere_Sphere.000_Sphere_Sphere.000_Material.001')
+        {
+            console.log('Basofil')
+        }
+        else if (intersects[0].object.name == 'Sphere_Sphere.003_Sphere_Sphere.003_Material.003')
+        {
+            console.log('Eosinofil')
+        }
+        else if (intersects[0].object.name == 'Sphere_Sphere.008_Sphere_Sphere.008_Material.015')
+        {
+            console.log('Limfosit B')
+        }
+        else if (intersects[0].object.name == 'Sphere.002_Sphere.002_Material.013')
+        {
+            console.log('Limfosit T')
+        }
+        else if (intersects[0].object.name == 'Sphere.001_Sphere.002_Sphere.001_Sphere.002_Material.030')
+        {
+            console.log('Monosit')
+        }
+        else if (intersects[0].object.name == 'Sphere.004_Sphere.004_Material.027')
+        {
+            console.log('Neutrofil')
+        }
+        else if (intersects[0].object.name == 'Sphere_Sphere.009_Sphere_Sphere.009_Material.016')
+        {
+            console.log('Makrofag')
+        }
+        else if (intersects[0].object.name == 'Sphere_Sphere_Material.001')
+        {
+            console.log('Platelet')
+        }
+
+        // if ( intersects.length > 0 ) {
+        //     if ( INTERSECTED != intersects[ 0 ].object ) {
+        //         if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
+        //         INTERSECTED = intersects[ 0 ].object;
+        //         INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
+        //         INTERSECTED.material.emissive.setHex( 0x00ff00 );
+        //     }
+        // } else {
+        //     if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
+        //     INTERSECTED = null;
+        // }
     }
     function onMouseUp( event ) {
 
