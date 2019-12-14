@@ -17,9 +17,11 @@ function main()
     var b = new THREE.Vector3(-5, 6, 0);
     var c = new THREE.Vector3(-8, 8, 0);
 
-    var tri = new THREE.Triangle(a,b,c);
-    var material = new THREE.MeshPhongMaterial({color: 0xffffff});
-    var back = new THREE.Mesh(tri, material);
+    var spriteMap = new THREE.TextureLoader().load( "assets/back.jpg" );
+    var spriteMaterial = new THREE.SpriteMaterial( { map: spriteMap } );
+    var sprite = new THREE.Sprite( spriteMaterial );
+    sprite.position.x = -14.5
+    sprite.position.y = 6
 
     document.body.appendChild( renderer.domElement );
     var meshesVessels = [];
@@ -195,7 +197,9 @@ function main()
             light.position.set(0, 2, 4);
             camera.add(light);
         }
-    
+        
+        scene.add( sprite );
+       
         return {scene, camera};
     }
 
