@@ -27,7 +27,7 @@
     var bump = new THREE.TextureLoader().load('assets/bumpmap.jpg');
 
     var geometry = new THREE.SphereGeometry(2, 31, 32);
-    var material =  new THREE.MeshPhongMaterial({
+    var material =  new THREE.MeshLambertMaterial({
         color:0xff0000,
         // bumpMap: bump
     })
@@ -60,8 +60,8 @@
     };
 
     // Loaders
-    var loader = new THREE.OBJLoader(manager);
     var matloader = new THREE.MTLLoader(manager);
+    var loader = new THREE.OBJLoader(manager);
     var onProgress = function a ( xhr ) {
         if ( xhr.lengthComputable ) {
             var percentComplete = xhr.loaded / xhr.total * 100;
@@ -129,7 +129,7 @@
                 else if(i == 1){
                     meshes.push(objects[i]);
                     scene.add(objects[i]);
-                    for(var j=0; j<2; j++){
+                    for(var j=0; j<1; j++){
                         var object = objects[i].clone();
                         meshes.push(object);
                         scene.add(object);
@@ -139,7 +139,7 @@
                 else if(i == 2){
                     meshes.push(objects[i]);
                     scene.add(objects[i]);
-                    for(var j=0; j<4; j++){
+                    for(var j=0; j<2; j++){
                         var object = objects[i].clone();
                         meshes.push(object);
                         scene.add(object);
@@ -149,7 +149,7 @@
                 else if(i == 3){
                     meshes.push(objects[i]);
                     scene.add(objects[i]);
-                    for(var j=0; j<5; j++){
+                    for(var j=0; j<3; j++){
                         var object = objects[i].clone();
                         meshes.push(object);
                         scene.add(object);
@@ -159,7 +159,7 @@
                 else if(i == 4){
                     meshes.push(objects[i]);
                     scene.add(objects[i]);
-                    for(var j=0; j<5; j++){
+                    for(var j=0; j<3; j++){
                         var object = objects[i].clone();
                         meshes.push(object);
                         scene.add(object);
@@ -169,7 +169,7 @@
                 else if(i == 5){
                     meshes.push(objects[i]);
                     scene.add(objects[i]);
-                    for(var j=0; j<6; j++){
+                    for(var j=0; j<3; j++){
                         var object = objects[i].clone();
                         meshes.push(object);
                         scene.add(object);
@@ -179,7 +179,7 @@
                 else if(i == 6){
                     meshes.push(objects[i]);
                     scene.add(objects[i]);
-                    for(var j=0; j<20; j++){
+                    for(var j=0; j<10; j++){
                         var object = objects[i].clone();
                         meshes.push(object);
                         scene.add(object);
@@ -189,7 +189,7 @@
                 else if(i == 7){
                     meshes.push(objects[i]);
                     scene.add(objects[i]);
-                    for(var j=0; j<6; j++){
+                    for(var j=0; j<3; j++){
                         var object = objects[i].clone();
                         meshes.push(object);
                         scene.add(object);
@@ -308,6 +308,7 @@
                 INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
                 INTERSECTED.material.emissive.setHex( 0x00ff00 );
             }
+            play();
         } else {
             if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
             INTERSECTED = null;
