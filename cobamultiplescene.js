@@ -349,7 +349,7 @@ function main()
     function render2()
     {
         const {scene, camera} = sceneOverview;
-        console.log(scene);
+        // console.log(scene);
         var j;
         for (j=0; j<meshes.length; j++){
             if(j >148 && j <156){

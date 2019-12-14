@@ -57,25 +57,6 @@
         console.log( item, loaded, total );
     };
 
-    // Loaders
-
-    //LOAD BGM
-    var listener = new THREE.AudioListener();
-    var sound = new THREE.Audio( listener );
-
-    //Heartbeat BGM
-    var bgm = new THREE.AudioLoader();
-    bgm.load( 'soundeffect/click.mp3', function( buffer ) 
-    {
-        console.log('MASUK')
-        sound.setBuffer( buffer );
-        sound.setLoop( true );
-        sound.setVolume(1.0);
-        sound.play();
-    });
-
-    // play();
-
     //LOAD OBJ & MTL
     var matloader = new THREE.MTLLoader(manager);
     var loader = new THREE.OBJLoader(manager);
@@ -123,7 +104,7 @@
         }
         else if(jenis == 9)
         {
-            sound_loader('soundeffect/click.mp3');
+            sound_loader('soundeffect/heartbeat.mp3');
             var timer = new Date();
             end = timer.getTime();
             // var diff = start - end;
@@ -243,7 +224,7 @@
         audioLoader.load( audiofile, function( buffer ) {
             sound.setBuffer( buffer );
             sound.setLoop( true );
-            sound.setVolume( 0.5 );
+            sound.setVolume( 1.0 );
             sound.play();
         });
     }
