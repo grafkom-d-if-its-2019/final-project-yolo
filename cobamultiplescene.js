@@ -16,8 +16,7 @@ function main()
     var spriteMap = new THREE.TextureLoader().load( "assets/back.jpg" );
     var spriteMaterial = new THREE.SpriteMaterial( { map: spriteMap } );
     var sprite = new THREE.Sprite( spriteMaterial );
-    sprite.position.x = -14.5
-    sprite.position.y = 6
+    sprite.position.set(-14.5, 6, 0);
 
     document.body.appendChild( renderer.domElement );
     var meshesVessels = [];
@@ -278,6 +277,7 @@ function main()
             else if(i == 4){
                 meshes.push(objects[i]);
                 // sceneInfo.scene.add(objects[i]);
+
                 for(var j=0; j<5; j++){
                     var object = objects[i].clone();
                     meshes.push(object);
@@ -350,9 +350,10 @@ function main()
 
         controls.setZoomSpeed(0); // set zoom speed
         controls.enableVerticalRotation(); // enables the vertical rotation, see also disableVerticalRotation(), enableHorizontalRotation(), disableHorizontalRotation()
+        controls.enableHorizontalRotation();
         controls.setMaxVerticalRotationAngle(Math.PI / 4, Math.PI / 4); // sets a max angle value for the rotation of the object, see also setMaxHorizontalRotationAngle(R,R)
         controls.disableMaxHorizontalAngleRotation()// disables rotation angle limits for horizontal rotation, see also disableMaxVerticalAngleRotation()
-        controls.setRotationSpeed(0.05); // sets a new rotation speed for desktop, see also setRotationSpeedTouchDevices(value)
+        controls.setRotationSpeed(0.1); // sets a new rotation speed for desktop, see also setRotationSpeedTouchDevices(value)
 
         sceneInfo.scene.add(object);
         sceneInfo.object = object;
@@ -443,6 +444,14 @@ function main()
                 overview = false
                 render();
             }
+        }
+        else 
+        {
+            raycaster.setFromCamera( mouse, sceneOverview.camera );
+
+            var intersects = raycaster.intersectObjects( meshes, true );
+            console.log(intersects);
+            
         }
     }
 
