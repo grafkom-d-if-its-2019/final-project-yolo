@@ -106,6 +106,7 @@
         }
         else if(jenis == 9)
         {
+            sound_loader('soundeffect/click.mp3');
             var timer = new Date();
             end = timer.getTime();
             // var diff = start - end;
@@ -210,6 +211,24 @@
             console.log(scene.children);
             main();
         }
+    }
+
+    function sound_loader(audiofile){
+        // create an AudioListener and add it to the camera
+        var listener = new THREE.AudioListener();
+        camera.add( listener );
+
+        // create a global audio source
+        var sound = new THREE.Audio( listener );
+
+        // load a sound and set it as the Audio object's buffer
+        var audioLoader = new THREE.AudioLoader();
+        audioLoader.load( audiofile, function( buffer ) {
+            sound.setBuffer( buffer );
+            sound.setLoop( true );
+            sound.setVolume( 0.5 );
+            sound.play();
+        });
     }
 
     // fungsi load file obj dan mtl
@@ -338,6 +357,8 @@
             console.log('Platelet')
         }
 
+        AnimationPlaybackEvent()
+
         // if ( intersects.length > 0 ) {
         //     if ( INTERSECTED != intersects[ 0 ].object ) {
         //         if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
@@ -360,7 +381,7 @@
     }
 
     document.addEventListener( 'mousedown', onMouseDown, false );
-    document.addEventListener( 'mouseup', onMouseUp, false );
+    // document.addEventListener( 'mouseup', onMouseUp, false );
 
     var path_index=0;
     function animate()
@@ -456,7 +477,7 @@
         generatePath();
         // console.log(path);
         generateCenterPath();
-        console.log(center_path);
+        // console.log(center_path);
         //Render
         animate();
     }
