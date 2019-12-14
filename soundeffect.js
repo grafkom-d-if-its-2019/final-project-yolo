@@ -1,9 +1,12 @@
-var x = new Audio("soundeffect/click.mp3"); 
+var x = new Audio("soundeffect/heartbeat.mp3"); 
 
-function play() { 
-    x.play(); 
+function play() 
+{ 
+    x.play();
+    x.loop(true); 
 }
 
-function stop() { 
+function stop() 
+{ 
     x.stop(); 
 }
