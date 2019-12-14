@@ -119,7 +119,7 @@
                 {
                     meshes.push(objects[i]);
                     scene.add(objects[i]);
-                    for(var j=0; j<50; j++){
+                    for(var j=0; j<100; j++){
                         var object = objects[i].clone();
                         meshes.push(object);
                         scene.add(object);
@@ -267,6 +267,7 @@
                         // Makrofag
                         else if(index == 7){
                             object.scale.set(4,4,4);
+                            object.rotation.z = Math.PI;
                         }
                         // Platelet
                         else if(index == 8){
@@ -294,24 +295,6 @@
     
         mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
         mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
-    
-    }
-    function onMouseUp( event ) {
-
-        // calculate mouse position in normalized device coordinates
-        // (-1 to +1) for both components
-    
-        mouse.x = -1;
-        mouse.y = -1;
-    
-    }
-
-    document.addEventListener( 'mousedown', onMouseDown, false );
-    document.addEventListener( 'mouseup', onMouseUp, false );
-
-    var path_index=0;
-    function animate()
-    {
         // update the picking ray with the camera and mouse position
         raycaster.setFromCamera( mouse, camera );
 
@@ -329,11 +312,34 @@
             if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
             INTERSECTED = null;
         }
+    }
+    function onMouseUp( event ) {
+
+        // calculate mouse position in normalized device coordinates
+        // (-1 to +1) for both components
+        mouse.x = null;
+        mouse.y = null;
+        INTERSECTED.material.emissive.setHex( 0x000000 );
+    }
+
+    document.addEventListener( 'mousedown', onMouseDown, false );
+    document.addEventListener( 'mouseup', onMouseUp, false );
+
+    var path_index=0;
+    function animate()
+    {
 
         // console.log(scene.children);
         var j;
         for (j=0; j<meshes.length; j++){
-            scene.children[j].rotation.z+=0.01;
+            if(j >148 && j <156){
+                scene.children[j].rotation.x+=0.01;
+            }
+            else{
+                // scene.children[j].rotation.x+=0.005;
+                // scene.children[j].rotation.y+=0.001;
+                scene.children[j].rotation.z+=0.01;
+            }
             scene.children[j].position.x=path[(path_index + start_index[j])%2000].x + center_path[j].x;
             scene.children[j].position.y=path[(path_index + start_index[j])%2000].y + center_path[j].y;
             scene.children[j].position.z=path[(path_index + start_index[j])%2000].z;
@@ -378,7 +384,7 @@
     function generateCenterPath()
     {
         var cc;
-        for(cc=0; cc<200; cc++)
+        for(cc=0; cc<meshes.length; cc++)
         {
             var cx = randomNumber(-50, 50);
             var cy = randomNumber(-23, 23);
