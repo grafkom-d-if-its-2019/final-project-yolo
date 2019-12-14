@@ -1,5 +1,6 @@
 function main()
 {
+    var scene;
     const renderer = new THREE.WebGLRenderer();
     const loader = new THREE.OBJLoader();
     const matloader = new THREE.MTLLoader();
@@ -27,208 +28,8 @@ function main()
     var meshes = [];
     var index = 0;
 
-    function generatePath()
+    function generateMesh()
     {
-        var tt;
-        for(tt=0; tt<2000; tt++)
-        {
-            var t = tt/2000;
-            var tx = 15* (t*3-1.5);
-            var ty = 0;
-            var tz = Math.sin(2*Math.PI * t) *5;
-            var point = new THREE.Vector3(tx, ty, tz).multiplyScalar(10);
-            path.push(point);
-        }
-    }
-
-    // Function to generate float random number
-    function randomNumber(min, max) {  
-        return Math.random() * (max - min) + min; 
-    }
-
-    // Function to generate integer random number  
-    function randomNumberInt(min, max) {  
-        return Math.floor(Math.random() * (max - min) + min); 
-    }  
-
-    function generateCenterPath()
-    {
-        var cc;
-        for(cc=0; cc<meshes.length; cc++)
-        {
-            var cx = randomNumber(-50, 50);
-            var cy = randomNumber(-23, 23);
-            var point = new THREE.Vector3(cx, cy, 0);
-            center_path.push(point);
-            start_index.push(randomNumberInt(0,1750));
-        }
-    }
-
-    function next()
-    {
-        index++;
-        if(index == 1)
-        {
-            my_loader('assets/BASOFIL.mtl', 'assets/BASOFIL.obj', index);
-        }
-        else if(index == 2){
-            my_loader('assets/EOSINOFIL.mtl', 'assets/EOSINOFIL.obj', index);
-        }
-        else if(index == 3){
-            my_loader('assets/LIMFOSITB.mtl', 'assets/LIMFOSITB.obj', index);
-        }
-        else if(index == 4){
-            my_loader('assets/LIMFOSITT.mtl', 'assets/LIMFOSITT.obj', index);
-        }
-        else if(index == 5){
-            my_loader('assets/MONOSIT.mtl', 'assets/MONOSIT.obj', index);
-        }
-        else if(index == 6){
-            my_loader('assets/NEUTROFIL.mtl', 'assets/NEUTROFIL.obj', index);
-        }
-        else if(index == 7){
-            my_loader('assets/MAKROFAG.mtl', 'assets/MAKROFAG.obj', index);
-        }
-        else if(index == 8){
-            my_loader('assets/PLATELET.mtl', 'assets/PLATELET.obj', index);
-        }
-        else if(index == 9)
-        {
-            setupOverviewScene();
-            generatePath();
-            generateCenterPath();
-            render2();
-        }
-    }
-
-    // fungsi load file obj dan mtl
-    function my_loader(mtlfile, objfile, index)
-    {
-        matloader.load
-        (
-            //Resource URL
-            mtlfile,
-
-            // called when resource is loaded
-            function ( material ) 
-            {
-                material.preload();
-
-                loader.setMaterials(material)
-
-                loader.load
-                (
-                    // resource URL
-                    objfile,
-            
-                    // called when resource is loaded
-                    function ( object ) 
-                    {
-                        object.traverse( function ( child ) {
-                            
-                            if ( child instanceof THREE.Mesh ) {
-                                child.material.shininess = 0.01;
-                            }
-                    
-                        } );
-                        // Red Blood Cell
-                        if(index == 0)
-                        {
-                            object.scale.set(2.5,2.5,2.5);
-                        }
-                        // Basofil
-                        else if(index == 1){
-                            object.scale.set(4,4,4);
-                        }
-                        // Eosinofil
-                        else if(index == 2){
-                            object.scale.set(4,4,4);
-                        }
-                        // Limfosit B
-                        else if(index == 3){
-                            object.scale.set(4,4,4);
-                        }
-                        // Limfosit T
-                        else if(index == 4){
-                            object.scale.set(4,4,4);
-                        }
-                        // Monosit
-                        else if(index == 5){
-                            object.scale.set(4,4,4);
-                        }
-                        // Neutrofil
-                        else if(index == 6){
-                            object.scale.set(4,4,4);
-                        }
-                        // Makrofag
-                        else if(index == 7){
-                            object.scale.set(4,4,4);
-                            object.rotation.z = Math.PI;
-                        }
-                        // Platelet
-                        else if(index == 8){
-
-                        }
-                        objects.push(object);
-                        next();
-                    }, 
-                );
-            }
-        );
-    }
-
-    my_loader('assets/RED.mtl', 'assets/RED.obj', index);
-
-    function makeScene() {
-        const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x000000);
-        const camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 3, 1000 );
-        camera.position.set(0, 0, 10);
-        camera.lookAt(0, 0, 0);
-        {
-            const color = 0xFFFFFF;
-            const intensity = 1;
-            const light = new THREE.DirectionalLight(color, intensity);
-            light.position.set(0, 2, 4);
-            camera.add(light);
-        }
-        
-        scene.add( sprite );
-        
-        return {scene, camera };
-    }
-
-    function makeSceneOverview() {
-        var scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x000000)
-
-        var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 3, 1000 );
-        camera.position.set(105.16086905665598, -1.2354888962484027, -75.38730298823702);
-        camera.lookAt(0,0,0);
-
-        //Lighting
-        var spotLight = new THREE.SpotLight( 0xffffff );
-        
-        spotLight.castShadow = true;
-
-        spotLight.shadow.mapSize.width = 1024;
-        spotLight.shadow.mapSize.height = 1024;
-
-        spotLight.shadow.camera.near = 500;
-        spotLight.shadow.camera.far = 4000;
-        spotLight.shadow.camera.fov = 30;
-
-        camera.add( spotLight );
-        spotLight.position.set( 0, 0, 10 );
-        spotLight.target = camera;
-
-        return {scene, camera}
-    }
-
-    function setupOverviewScene()
-    {
-        sceneOverview = makeSceneOverview();
-
         for(var i=0; i<objects.length; i++)
         {
             var j;
@@ -325,6 +126,211 @@ function main()
                 }
             }
         }
+    }
+
+    function generatePath()
+    {
+        var tt;
+        for(tt=0; tt<2000; tt++)
+        {
+            var t = tt/2000;
+            var tx = 15* (t*3-1.5);
+            var ty = 0;
+            var tz = Math.sin(2*Math.PI * t) *5;
+            var point = new THREE.Vector3(tx, ty, tz).multiplyScalar(10);
+            path.push(point);
+        }
+    }
+
+    // Function to generate float random number
+    function randomNumber(min, max) {  
+        return Math.random() * (max - min) + min; 
+    }
+
+    // Function to generate integer random number  
+    function randomNumberInt(min, max) {  
+        return Math.floor(Math.random() * (max - min) + min); 
+    }  
+
+    function generateCenterPath()
+    {
+        var cc;
+        for(cc=0; cc<meshes.length; cc++)
+        {
+            var cx = randomNumber(-50, 50);
+            var cy = randomNumber(-23, 23);
+            var point = new THREE.Vector3(cx, cy, 0);
+            center_path.push(point);
+            start_index.push(randomNumberInt(0,1750));
+        }
+    }
+
+    function next()
+    {
+        index++;
+        if(index == 1)
+        {
+            my_loader('assets/BASOFIL.mtl', 'assets/BASOFIL.obj', index);
+        }
+        else if(index == 2){
+            my_loader('assets/EOSINOFIL.mtl', 'assets/EOSINOFIL.obj', index);
+        }
+        else if(index == 3){
+            my_loader('assets/LIMFOSITB.mtl', 'assets/LIMFOSITB.obj', index);
+        }
+        else if(index == 4){
+            my_loader('assets/LIMFOSITT.mtl', 'assets/LIMFOSITT.obj', index);
+        }
+        else if(index == 5){
+            my_loader('assets/MONOSIT.mtl', 'assets/MONOSIT.obj', index);
+        }
+        else if(index == 6){
+            my_loader('assets/NEUTROFIL.mtl', 'assets/NEUTROFIL.obj', index);
+        }
+        else if(index == 7){
+            my_loader('assets/MAKROFAG.mtl', 'assets/MAKROFAG.obj', index);
+        }
+        else if(index == 8){
+            my_loader('assets/PLATELET.mtl', 'assets/PLATELET.obj', index);
+        }
+        else if(index == 9)
+        {
+            generateMesh()
+            setupOverviewScene();
+            generatePath();
+            generateCenterPath();
+            console.log(path)
+            render2();
+        }
+    }
+
+    // fungsi load file obj dan mtl
+    function my_loader(mtlfile, objfile, index)
+    {
+        matloader.load
+        (
+            //Resource URL
+            mtlfile,
+
+            // called when resource is loaded
+            function ( material ) 
+            {
+                material.preload();
+
+                loader.setMaterials(material)
+
+                loader.load
+                (
+                    // resource URL
+                    objfile,
+            
+                    // called when resource is loaded
+                    function ( object ) 
+                    {
+                        object.traverse( function ( child ) {
+                            
+                            if ( child instanceof THREE.Mesh ) {
+                                child.material.shininess = 0.01;
+                            }
+                    
+                        } );
+                        // Red Blood Cell
+                        if(index == 0)
+                        {
+                            object.scale.set(2.5,2.5,2.5);
+                        }
+                        // Basofil
+                        else if(index == 1){
+                            object.scale.set(4,4,4);
+                        }
+                        // Eosinofil
+                        else if(index == 2){
+                            object.scale.set(4,4,4);
+                        }
+                        // Limfosit B
+                        else if(index == 3){
+                            object.scale.set(4,4,4);
+                        }
+                        // Limfosit T
+                        else if(index == 4){
+                            object.scale.set(4,4,4);
+                        }
+                        // Monosit
+                        else if(index == 5){
+                            object.scale.set(4,4,4);
+                        }
+                        // Neutrofil
+                        else if(index == 6){
+                            object.scale.set(4,4,4);
+                        }
+                        // Makrofag
+                        else if(index == 7){
+                            object.scale.set(4,4,4);
+                            object.rotation.z = Math.PI;
+                        }
+                        // Platelet
+                        else if(index == 8){
+
+                        }
+                        objects.push(object);
+                        next();
+                    }, 
+                );
+            }
+        );
+    }
+
+    my_loader('assets/RED.mtl', 'assets/RED.obj', index);
+
+    function makeScene() {
+        scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x000000);
+        var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 3, 1000 );
+        camera.position.set(0, 0, 10);
+        camera.lookAt(0, 0, 0);
+        {
+            var color = 0xFFFFFF;
+            var intensity = 1;
+            var light = new THREE.DirectionalLight(color, intensity);
+            light.position.set(0, 2, 4);
+            camera.add(light);
+        }
+        
+        scene.add( sprite );
+        
+        return {scene, camera };
+    }
+
+    function makeSceneOverview() {
+        scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x000000)
+
+        var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 3, 1000 );
+        camera.position.set(105.16086905665598, -1.2354888962484027, -75.38730298823702);
+        camera.lookAt(0,0,0);
+
+        //Lighting
+        var spotLight = new THREE.SpotLight( 0xffffff );
+        
+        spotLight.castShadow = true;
+
+        spotLight.shadow.mapSize.width = 1024;
+        spotLight.shadow.mapSize.height = 1024;
+
+        spotLight.shadow.camera.near = 500;
+        spotLight.shadow.camera.far = 4000;
+        spotLight.shadow.camera.fov = 30;
+
+        camera.add( spotLight );
+        spotLight.position.set( 0, 0, 10 );
+        spotLight.target = camera;
+
+        return {scene, camera}
+    }
+
+    function setupOverviewScene()
+    {
+        sceneOverview = makeSceneOverview();
 
         for(i=0; i<meshes.length; i++)
         {
@@ -441,16 +447,15 @@ function main()
             {
                 console.log('Platelet')
                 sceneOverview = setupScene(8)
-                overview = false
+                overview = false;
                 render();
             }
         }
         else 
         {
-            raycaster.setFromCamera( mouse, sceneOverview.camera );
-
-            var intersects = raycaster.intersectObjects( meshes, true );
-            console.log(intersects);
+            setupOverviewScene();
+            overview = true;
+            render2();
             
         }
     }
@@ -466,7 +471,7 @@ function main()
         if(overview)
         {
             const {scene, camera} = sceneOverview;
-            // console.log(scene);
+            // console.log(path.x);
             var j;
             for (j=0; j<meshes.length; j++){
                 if(j >148 && j <156){
@@ -505,6 +510,7 @@ function main()
             sceneOverview.object.rotation.z +=0.001;
             renderSceneInfo(sceneOverview);
             
+            console.log(path)
             requestAnimationFrame(render);
         }
     }
