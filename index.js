@@ -50,8 +50,6 @@
     // redBloodCell(meshes);
     bloodVessels(meshesVessel);
     // monosit(meshes);
-    
-    //TESTING
   
     // Manager 
     var manager = new THREE.LoadingManager();
@@ -60,6 +58,25 @@
     };
 
     // Loaders
+
+    //LOAD BGM
+    var listener = new THREE.AudioListener();
+    var sound = new THREE.Audio( listener );
+
+    //Heartbeat BGM
+    var bgm = new THREE.AudioLoader();
+    bgm.load( 'soundeffect/click.mp3', function( buffer ) 
+    {
+        console.log('MASUK')
+        sound.setBuffer( buffer );
+        sound.setLoop( true );
+        sound.setVolume(1.0);
+        sound.play();
+    });
+
+    // play();
+
+    //LOAD OBJ & MTL
     var matloader = new THREE.MTLLoader(manager);
     var loader = new THREE.OBJLoader(manager);
     var onProgress = function a ( xhr ) {
@@ -301,7 +318,7 @@
         // calculate objects intersecting the picking ray
         var intersects = raycaster.intersectObjects( meshes, true );
         console.log(intersects);
-        play();
+
         if (intersects[0].object.name == 'Cylinder_Cylinder_Material.028')
         {
             console.log('Red Blood Cell')
@@ -338,6 +355,8 @@
         {
             console.log('Platelet')
         }
+
+        // play();
 
         // if ( intersects.length > 0 ) {
         //     if ( INTERSECTED != intersects[ 0 ].object ) {
@@ -449,6 +468,7 @@
 
         scene.add( camera );
         camera.add( spotLight );
+        
         spotLight.position.set( 0, 0, 10 );
         spotLight.target = camera;
         
