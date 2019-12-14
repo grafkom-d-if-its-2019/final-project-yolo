@@ -3,6 +3,8 @@ function main()
     const renderer = new THREE.WebGLRenderer();
     const loader = new THREE.OBJLoader();
     const matloader = new THREE.MTLLoader();
+    var raycaster = new THREE.Raycaster();
+    var mouse = new THREE.Vector2(), INTERSECTED;
     renderer.setSize( window.innerWidth, window.innerHeight );
 
     var path = [];
@@ -10,6 +12,14 @@ function main()
     var center_path = [];
     var start_index = [];
     var overview = true;
+
+    var a = new THREE.Vector3(-5, 10, 0);
+    var b = new THREE.Vector3(-5, 6, 0);
+    var c = new THREE.Vector3(-8, 8, 0);
+
+    var tri = new THREE.Triangle(a,b,c);
+    var material = new THREE.MeshPhongMaterial({color: 0xffffff});
+    var back = new THREE.Mesh(tri, material);
 
     document.body.appendChild( renderer.domElement );
     var meshesVessels = [];
@@ -334,12 +344,98 @@ function main()
     {
         const sceneInfo = makeScene();
         const object = objects[cell];
+        object.position.set(0,0,0);
         sceneInfo.scene.add(object);
         sceneInfo.object = object;
-        sceneInfo.scene.add(sceneInfo.camera)
+        // sceneInfo.scene.add(back);
+        sceneInfo.scene.add(sceneInfo.camera);
 
         return sceneInfo;
     }
+
+    function onMouseDown( event ) {
+
+        // calculate mouse position in normalized device coordinates
+        // (-1 to +1) for both components
+    
+        mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+        mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+        // update the picking ray with the camera and mouse position
+        
+        // console.log(intersects);
+        // play();
+        if(overview)
+        {
+            raycaster.setFromCamera( mouse, sceneOverview.camera );
+
+            var intersects = raycaster.intersectObjects( meshes, true );
+            if (intersects[0].object.name == 'Cylinder_Cylinder_Material.028')
+            {
+                console.log('Red Blood Cell')
+                sceneOverview = setupScene(0)
+                overview = false
+                render();
+            }
+            else if (intersects[0].object.name == 'Sphere_Sphere.000_Sphere_Sphere.000_Material.001')
+            {
+                console.log('Basofil')
+                sceneOverview = setupScene(1)
+                overview = false
+                render();
+            }
+            else if (intersects[0].object.name == 'Sphere_Sphere.003_Sphere_Sphere.003_Material.003')
+            {
+                console.log('Eosinofil')
+                sceneOverview = setupScene(2)
+                overview = false
+                render();
+            }
+            else if (intersects[0].object.name == 'Sphere_Sphere.008_Sphere_Sphere.008_Material.015')
+            {
+                console.log('Limfosit B')
+                sceneOverview = setupScene(3)
+                overview = false
+                render();
+            }
+            else if (intersects[0].object.name == 'Sphere.002_Sphere.002_Material.013')
+            {
+                console.log('Limfosit T')
+                sceneOverview = setupScene(4)
+                overview = false
+                render();
+            }
+            else if (intersects[0].object.name == 'Sphere.001_Sphere.002_Sphere.001_Sphere.002_Material.030')
+            {
+                console.log('Monosit')
+                sceneOverview = setupScene(5)
+                overview = false
+                render();
+            }
+            else if (intersects[0].object.name == 'Sphere.004_Sphere.004_Material.027')
+            {
+                console.log('Neutrofil')
+                sceneOverview = setupScene(6)
+                overview = false
+                render();
+            }
+            else if (intersects[0].object.name == 'Sphere_Sphere.009_Sphere_Sphere.009_Material.016')
+            {
+                console.log('Makrofag')
+                sceneOverview = setupScene(7)
+                overview = false
+                render();
+            }
+            else if (intersects[0].object.name == 'Sphere_Sphere_Material.001')
+            {
+                console.log('Platelet')
+                sceneOverview = setupScene(8)
+                overview = false
+                render();
+            }
+        }
+    }
+
+    document.addEventListener( 'mousedown', onMouseDown, false );
 
     function renderSceneInfo(sceneInfo) {  
         // sceneInfo.scene.children[1].rotation.z+=0.01;
@@ -348,55 +444,53 @@ function main()
 
     function render2()
     {
-        const {scene, camera} = sceneOverview;
-        console.log(scene);
-        var j;
-        for (j=0; j<meshes.length; j++){
-            if(j >148 && j <156){
-                scene.children[j].rotation.x+=0.01;
+        if(overview)
+        {
+            const {scene, camera} = sceneOverview;
+            // console.log(scene);
+            var j;
+            for (j=0; j<meshes.length; j++){
+                if(j >148 && j <156){
+                    scene.children[j].rotation.x+=0.01;
+                }
+                else{
+                    scene.children[j].rotation.x+=0.005;
+                    // sceneCell[0].scene.children[j].rotation.y+=0.001;
+                    // sceneCell[0].scene.children[j].rotation.z+=0.01;
+                }
+                scene.children[j].position.x=path[(path_index + start_index[j])%2000].x + center_path[j].x;
+                scene.children[j].position.y=path[(path_index + start_index[j])%2000].y + center_path[j].y;
+                scene.children[j].position.z=path[(path_index + start_index[j])%2000].z;
             }
-            else{
-                scene.children[j].rotation.x+=0.005;
-                // sceneCell[0].scene.children[j].rotation.y+=0.001;
-                // sceneCell[0].scene.children[j].rotation.z+=0.01;
-            }
-            scene.children[j].position.x=path[(path_index + start_index[j])%2000].x + center_path[j].x;
-            scene.children[j].position.y=path[(path_index + start_index[j])%2000].y + center_path[j].y;
-            scene.children[j].position.z=path[(path_index + start_index[j])%2000].z;
+            path_index++;
+            path_index%=2000;
+            
+            // controls.update();
+    
+            // console.log(scene.children[6].position.z);
+    
+            // console.log(camera.position.x, camera.position.y, camera.position.z);
+            renderer.render( scene, camera );
+            requestAnimationFrame( render2 );
         }
-        path_index++;
-        path_index%=2000;
         
-        // controls.update();
-
-        // console.log(scene.children[6].position.z);
-
-        // console.log(camera.position.x, camera.position.y, camera.position.z);
-        renderer.render( scene, camera );
-        requestAnimationFrame( render2 );
     }
 
     var t=0;
     function render(time) {
         // overview = false;
-        time *= 0.001;
+        if(!overview)
+        {
+            time *= 0.001;
     
-        if (t<100) renderSceneInfo(sceneCell[1]);
-        else if(t<200) renderSceneInfo(sceneCell[2]);
-        else if(t<300) renderSceneInfo(sceneCell[3]);
-        else if(t<400) renderSceneInfo(sceneCell[4]);
-        else if(t<500) renderSceneInfo(sceneCell[5]);
-        else if(t<600) renderSceneInfo(sceneCell[6]);
-        else if(t<700) renderSceneInfo(sceneCell[7]);
-        else if(t<800) renderSceneInfo(sceneCell[8]);
-        else if(t<900) renderSceneInfo(sceneCell[9]);
-
-        // console.log(t); 
-
-        t++;
-        t%=900;
+            sceneOverview.object.rotation.z +=0.001;
+            renderSceneInfo(sceneOverview);
     
-        requestAnimationFrame(render);
+            t++;
+            t%=900;
+        
+            requestAnimationFrame(render);
+        }
     }
 }
 
