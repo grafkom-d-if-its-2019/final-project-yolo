@@ -2,6 +2,7 @@
 
     //Add Scene
     var path = [];
+    var center_path = [];
 
     var scene = new THREE.Scene();
     var meshes=[];
@@ -86,9 +87,6 @@
         else if(index == 3){
             my_loader('assets/NEUTROFIL.mtl', 'assets/NEUTROFIL.obj', index);
         }
-        // else if(index == 4){
-        //     my_loader('assets/MONOSIT.mtl', 'assets/MONOSIT.obj', index);
-        // }
         else if(index == 4){
             my_loader('assets/PLATELET.mtl', 'assets/PLATELET.obj', index);
         }
@@ -107,6 +105,8 @@
             {
                 scene.add(meshes[i]);
             }
+            console.log(meshes);
+            console.log(scene.children);
             main();
         }
     }
@@ -136,7 +136,10 @@
                     {
                         object.position.z += 10*index;
                         // object.position.y -= 2;
+                        var object2 = object.clone();
+                        object2.position.x += 10*index;
                         meshes.push(object);
+                        meshes.push(object2);
                         // scene.add(object);
                         next();
                     }, 
@@ -187,11 +190,14 @@
             INTERSECTED = null;
         }
 
-        // console.log("masuk animate");
-        scene.children[1].rotation.z+=0.01;
-        scene.children[1].position.x=path[path_index].x;
-        scene.children[1].position.y=path[path_index].y;
-        scene.children[1].position.z=path[path_index].z;
+        // console.log(scene.children);
+        var j;
+        for (j=0; j<meshes.length; j++){
+            scene.children[j].rotation.z+=0.01;
+            scene.children[j].position.x=path[path_index].x + center_path[j].x;
+            scene.children[j].position.y=path[path_index].y + center_path[j].y;
+            scene.children[j].position.z=path[path_index].z + center_path[j].z;
+        }
         path_index++;
         path_index%=2000;
         
@@ -220,6 +226,23 @@
         }
     }
 
+    function randomNumber(min, max) {  
+        return Math.random() * (max - min) + min; 
+    }
+
+    function generateCenterPath()
+    {
+        var cc;
+        for(cc=0; cc<200; cc++)
+        {
+            var cx = randomNumber(-50, 50);
+            var cy = randomNumber(-29, 29);
+            var cz = randomNumber(-10, 10);
+            var point = new THREE.Vector3(cx, cy, cz);
+            center_path.push(point);
+        }
+    }
+
     function main(){
         scene.add(meshesVessel[0]);
 
@@ -240,10 +263,12 @@
         spotLight.position.set( 0, 0, 10 );
         spotLight.target = camera;
         
-        //Render
+        console.log(scene.children);
+
         generatePath();
-        console.log(path);
-        // console.log(path[0].x, path[0].y, path[0].z);
+        // console.log(path);
+        generateCenterPath();
+        console.log(center_path);
         //Render
         animate();
     }
