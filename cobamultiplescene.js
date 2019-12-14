@@ -3,7 +3,11 @@ function main()
     const renderer = new THREE.WebGLRenderer();
     const loader = new THREE.OBJLoader();
     const matloader = new THREE.MTLLoader();
+    renderer.setSize( window.innerWidth, window.innerHeight );
+    
+
     document.body.appendChild( renderer.domElement );
+
     var sceneMonosit, sceneEusinofil;
     var objects = [];
     var index = 0;
@@ -17,11 +21,9 @@ function main()
         else if(index==2)
         {
             console.log("Masuk");
-            console.log(objects[1]);
             sceneMonosit = setupScene(0);
-            console.log("Scene Monosit Masuk");
             sceneEusinofil = setupScene(1);
-            console.log("Scene Eusinofil Masuk");
+            console.log(sceneMonosit.scene);
             console.log(sceneEusinofil.scene);
             render();
         }
@@ -51,7 +53,8 @@ function main()
                     function ( object ) 
                     {
                         // object.position.z += 10*index;
-                        object.position.y -= 2;
+                        // object.position.y -= 2;
+                        object.scale.set(3, 3, 3);
                         objects.push(object);
                         next();
                     }, 
@@ -65,20 +68,14 @@ function main()
     function makeScene() {
         const scene = new THREE.Scene();
         scene.background = new THREE.Color(0x000000);
-        
-        const fov = 45;
-        const aspect = 2;  // the canvas default
-        const near = 0.1;
-        const far = 5;
-        const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-        camera.position.set(0, 1, 2);
+        const camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 3, 1000 );
+        camera.position.set(0, 0, 10);
         camera.lookAt(0, 0, 0);
-    
         {
             const color = 0xFFFFFF;
             const intensity = 1;
             const light = new THREE.DirectionalLight(color, intensity);
-            light.position.set(-1, 2, 4);
+            light.position.set(0, 2, 4);
             scene.add(light);
         }
     
@@ -95,7 +92,8 @@ function main()
     }
 
     function renderSceneInfo(sceneInfo) {
-        sceneInfo.camera.updateProjectionMatrix();
+        // console.log(sceneInfo);
+        // sceneInfo.camera.updateProjectionMatrix();
     
         renderer.render(sceneInfo.scene, sceneInfo.camera);
     }
@@ -104,19 +102,16 @@ function main()
     function render(time) {
         time *= 0.001;
     
-        renderer.setScissorTest(false);
-        renderer.clear(true, true);
-        renderer.setScissorTest(true);
-    
         sceneMonosit.object.rotation.y = time * .1;
         sceneEusinofil.object.rotation.y = time * .1;
     
-        if(t<1000) renderSceneInfo(sceneMonosit);
+        if(t<100) renderSceneInfo(sceneMonosit);
         else renderSceneInfo(sceneEusinofil);
-        // console.log(t);
+
+        // console.log(t); 
 
         t++;
-        t%=2000;
+        t%=200;
     
         requestAnimationFrame(render);
     }
