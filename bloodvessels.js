@@ -20,7 +20,7 @@ function bloodVessels(meshes)
 {
     var texture = new THREE.TextureLoader().load('assets/blood_vessel_3.jpg');
     var path = new CustomSinCurve(10);
-    var geom = new THREE.TubeGeometry(path, 20, 35, 20, false);
+    var geom = new THREE.TubeGeometry(path, 20, 50, 20, false);
     var mat = new THREE.MeshPhongMaterial({color: 0xff0000, 
         map : texture,
         side: THREE.BackSide
