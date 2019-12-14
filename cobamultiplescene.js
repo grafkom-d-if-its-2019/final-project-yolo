@@ -186,6 +186,7 @@ function main()
         const scene = new THREE.Scene();
         scene.background = new THREE.Color(0x000000);
         const camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 3, 1000 );
+        var controls = new THREE.OrbitControls( camera, renderer.domElement );
         camera.position.set(0, 0, 10);
         camera.lookAt(0, 0, 0);
         {
@@ -196,7 +197,7 @@ function main()
             camera.add(light);
         }
     
-        return {scene, camera};
+        return {scene, camera, controls};
     }
 
     function makeSceneOverview() {
@@ -344,9 +345,12 @@ function main()
     {
         const sceneInfo = makeScene();
         const object = objects[cell];
-        object.position.set(0,0,0);
+        object.position.set(-5,0,0);
         sceneInfo.scene.add(object);
         sceneInfo.object = object;
+        sceneOverview.camera.lookAt(-5,0,0);
+        console.log(sceneOverview.camera.lookAt);
+
         // sceneInfo.scene.add(back);
         sceneInfo.scene.add(sceneInfo.camera);
 
@@ -485,9 +489,7 @@ function main()
     
             sceneOverview.object.rotation.z +=0.001;
             renderSceneInfo(sceneOverview);
-    
-            t++;
-            t%=900;
+            sceneOverview.controls.update();
         
             requestAnimationFrame(render);
         }
