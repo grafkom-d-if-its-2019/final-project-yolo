@@ -135,13 +135,11 @@
                     function ( object ) 
                     {
                         object.position.z += 10*index;
-                        object.position.y -= 2;
+                        // object.position.y -= 2;
                         meshes.push(object);
                         // scene.add(object);
                         next();
                     }, 
-                    onProgress, 
-                    onError
                 );
             }
         );
@@ -168,6 +166,7 @@
 
     document.addEventListener( 'mousedown', onMouseDown, false );
 
+    var path_index=0;
     function animate()
     {
         // update the picking ray with the camera and mouse position
@@ -189,7 +188,13 @@
         }
 
         // console.log("masuk animate");
-        // scene.children[1].rotation.x+=0.1;
+        scene.children[1].rotation.z+=0.01;
+        scene.children[1].position.x=path[path_index].x;
+        scene.children[1].position.y=path[path_index].y;
+        scene.children[1].position.z=path[path_index].z;
+        path_index++;
+        path_index%=2000;
+        
 
         controls.update();
 
@@ -199,18 +204,18 @@
         renderer.render( scene, camera );
         requestAnimationFrame( animate );
     }
-    setTimeout (animate, 6000);
+    // setTimeout (animate, 6000);
 
     function generatePath()
     {
         var tt;
-        for(tt=0; tt<1000; tt++)
+        for(tt=0; tt<2000; tt++)
         {
-            var t = tt/1000;
+            var t = tt/2000;
             var tx = 15* (t*3-1.5);
             var ty = 0;
             var tz = Math.sin(2*Math.PI * t) *5;
-            var point = new THREE.Vector3(tx, ty, tz);
+            var point = new THREE.Vector3(tx, ty, tz).multiplyScalar(10);
             path.push(point);
         }
     }
@@ -237,7 +242,8 @@
         
         //Render
         generatePath();
-        
+        console.log(path);
+        // console.log(path[0].x, path[0].y, path[0].z);
         //Render
         animate();
     }
