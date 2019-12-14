@@ -4,27 +4,48 @@ function main()
     const loader = new THREE.OBJLoader();
     const matloader = new THREE.MTLLoader();
     renderer.setSize( window.innerWidth, window.innerHeight );
-    
 
     document.body.appendChild( renderer.domElement );
 
-    var sceneMonosit, sceneEusinofil;
+    var sceneCell = [];
     var objects = [];
     var index = 0;
 
     function next()
     {
         index++;
-        if(index == 1){
+        if(index == 1)
+        {
+            my_loader('assets/BASOFIL.mtl', 'assets/BASOFIL.obj', index);
+        }
+        else if(index == 2){
             my_loader('assets/EOSINOFIL.mtl', 'assets/EOSINOFIL.obj', index);
         }
-        else if(index==2)
+        else if(index == 3){
+            my_loader('assets/LIMFOSITB.mtl', 'assets/LIMFOSITB.obj', index);
+        }
+        else if(index == 4){
+            my_loader('assets/LIMFOSITT.mtl', 'assets/LIMFOSITT.obj', index);
+        }
+        else if(index == 5){
+            my_loader('assets/MONOSIT.mtl', 'assets/MONOSIT.obj', index);
+        }
+        else if(index == 6){
+            my_loader('assets/NEUTROFIL.mtl', 'assets/NEUTROFIL.obj', index);
+        }
+        else if(index == 7){
+            my_loader('assets/MAKROFAG.mtl', 'assets/MAKROFAG.obj', index);
+        }
+        else if(index == 8){
+            my_loader('assets/PLATELET.mtl', 'assets/PLATELET.obj', index);
+        }
+        else if(index == 9)
         {
-            console.log("Masuk");
-            sceneMonosit = setupScene(0);
-            sceneEusinofil = setupScene(1);
-            console.log(sceneMonosit.scene);
-            console.log(sceneEusinofil.scene);
+            var i;
+            for(i=0; i<index; i++)
+            {
+                sceneCell.push(setupScene(i))
+            }
             render();
         }
     }
@@ -52,9 +73,51 @@ function main()
                     // called when resource is loaded
                     function ( object ) 
                     {
-                        // object.position.z += 10*index;
-                        // object.position.y -= 2;
-                        object.scale.set(3, 3, 3);
+                        object.traverse( function ( child ) {
+                            
+                            if ( child instanceof THREE.Mesh ) {
+                                child.material.shininess = 0.01;
+                            }
+                    
+                        } );
+                        // Red Blood Cell
+                        if(index == 0)
+                        {
+                            object.scale.set(2.5,2.5,2.5);
+                        }
+                        // Basofil
+                        else if(index == 1){
+                            object.scale.set(4,4,4);
+                        }
+                        // Eosinofil
+                        else if(index == 2){
+                            object.scale.set(4,4,4);
+                        }
+                        // Limfosit B
+                        else if(index == 3){
+                            object.scale.set(4,4,4);
+                        }
+                        // Limfosit T
+                        else if(index == 4){
+                            object.scale.set(4,4,4);
+                        }
+                        // Monosit
+                        else if(index == 5){
+                            object.scale.set(4,4,4);
+                        }
+                        // Neutrofil
+                        else if(index == 6){
+                            object.scale.set(4,4,4);
+                        }
+                        // Makrofag
+                        else if(index == 7){
+                            object.scale.set(4,4,4);
+                            object.rotation.z = Math.PI;
+                        }
+                        // Platelet
+                        else if(index == 8){
+
+                        }
                         objects.push(object);
                         next();
                     }, 
@@ -63,7 +126,7 @@ function main()
         );
     }
 
-    my_loader('assets/MONOSIT.mtl', 'assets/MONOSIT.obj', index);
+    my_loader('assets/RED.mtl', 'assets/RED.obj', index);
 
     function makeScene() {
         const scene = new THREE.Scene();
@@ -79,7 +142,7 @@ function main()
             scene.add(light);
         }
     
-        return {scene, camera };
+        return {scene, camera};
     }
 
     function setupScene(cell)
@@ -91,10 +154,7 @@ function main()
         return sceneInfo;
     }
 
-    function renderSceneInfo(sceneInfo) {
-        // console.log(sceneInfo);
-        // sceneInfo.camera.updateProjectionMatrix();
-    
+    function renderSceneInfo(sceneInfo) {  
         renderer.render(sceneInfo.scene, sceneInfo.camera);
     }
 
@@ -102,16 +162,20 @@ function main()
     function render(time) {
         time *= 0.001;
     
-        sceneMonosit.object.rotation.y = time * .1;
-        sceneEusinofil.object.rotation.y = time * .1;
-    
-        if(t<100) renderSceneInfo(sceneMonosit);
-        else renderSceneInfo(sceneEusinofil);
+        if(t<100) renderSceneInfo(sceneCell[0]);
+        else if(t<200) renderSceneInfo(sceneCell[1]);
+        else if(t<300) renderSceneInfo(sceneCell[2]);
+        else if(t<400) renderSceneInfo(sceneCell[3]);
+        else if(t<500) renderSceneInfo(sceneCell[4]);
+        else if(t<600) renderSceneInfo(sceneCell[5]);
+        else if(t<700) renderSceneInfo(sceneCell[6]);
+        else if(t<800) renderSceneInfo(sceneCell[7]);
+        else if(t<900) renderSceneInfo(sceneCell[8]);
 
         // console.log(t); 
 
         t++;
-        t%=200;
+        t%=800;
     
         requestAnimationFrame(render);
     }
