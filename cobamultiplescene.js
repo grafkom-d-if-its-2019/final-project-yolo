@@ -51,7 +51,7 @@ function main()
         var x = 10, y = 20;
         var context = canvas.getContext('2d');
         context.font = '11pt Calibri';
-        context.fillStyle = '#333';
+        context.fillStyle = '#fff';
         context.clearRect(0, 0, canvas.width, canvas.height);
         var words = text.split(' ');
         var line = '';
@@ -330,23 +330,38 @@ function main()
 
     my_loader('assets/RED.mtl', 'assets/RED.obj', index);
 
+    function sound_loader(audiofile){
+        // create an AudioListener and add it to the camera
+        var listener = new THREE.AudioListener();
+        camera.add( listener );
+
+        // create a global audio source
+        var sound = new THREE.Audio( listener );
+
+        // load a sound and set it as the Audio object's buffer
+        var audioLoader = new THREE.AudioLoader();
+        audioLoader.load( audiofile, function( buffer ) {
+            sound.setBuffer( buffer );
+            sound.setLoop( true );
+            sound.setVolume( 1.0 );
+            sound.play();
+        });
+    }
+
     function makeScene() {
         scene = new THREE.Scene();
         scene.background = new THREE.Color(0x000000);
-        var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 3, 1000 );
+        var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 3, 100 );
         camera.position.set(0, 0, 10);
         camera.lookAt(0, 0, 0);
-        {
-            var color = 0xFFFFFF;
-            // var intensity = 1;
-            var light = new THREE.SpotLight(color);
-            light.position.set(0, 0, 100000);
-            // camera.add(light);
-        }
         
+        var light = new THREE.PointLight( 0xffffff, 1.4, 0 );
+        light.position.set( 50, 0, 100 );
+        scene.add( light );
+
         scene.add( sprite );
         
-        return {scene, camera , light};
+        return {scene, camera};
     }
 
     function makeSceneOverview() {
@@ -398,7 +413,7 @@ function main()
     {
         const sceneInfo = makeScene();
         const object = objects[cell];
-        object.position.set(-5,0,0);
+        object.position.set(-6,0,0);
         var controls = new THREE.ObjectControls(sceneInfo.camera, renderer.domElement, object);
         controls.setDistance(8, 200); // set min - max distance for zoom
         var text = textureText(cell);
