@@ -14,10 +14,20 @@ function main()
     var start_index = [];
     var overview = true;
 
-    var spriteMap = new THREE.TextureLoader().load( "assets/back.jpg" );
-    var spriteMaterial = new THREE.SpriteMaterial( { map: spriteMap } );
-    var sprite = new THREE.Sprite( spriteMaterial );
-    sprite.position.set(-14.5, 6, 0);
+    // var spriteMap = new THREE.TextureLoader().load( "assets/back.jpg" );
+    // var spriteMaterial = new THREE.SpriteMaterial( { map: spriteMap } );
+    // var sprite = new THREE.Sprite( spriteMaterial );
+    // sprite.position.set(-14.5, 6, 0);
+    // sprite.scale.set(15, 15, 15);
+
+    // group = new THREE.Group();
+    var backCheck = [];
+    var backTex = new THREE.TextureLoader().load("assets/back.jpg");
+    var backGeo  = new THREE.PlaneGeometry(1, 1, 1);
+    var backMat = new THREE.MeshPhongMaterial( {map: backTex, side: THREE.DoubleSide} );
+    var back = new THREE.Mesh( backGeo , backMat );
+    back.position.set(-14.5, 6, 0);
+    backCheck.push(back);
 
     document.body.appendChild( renderer.domElement );
     var meshesVessels = [];
@@ -359,7 +369,8 @@ function main()
         light.position.set( 50, 0, 100 );
         scene.add( light );
 
-        scene.add( sprite );
+        // scene.add(sprite);
+        scene.add(backCheck[0]);
         
         return {scene, camera};
     }
@@ -527,8 +538,17 @@ function main()
         }
         else 
         {
-            setupOverviewScene();
+            
+            raycaster.setFromCamera( mouse, sceneOverview.camera );
+            var intersects2 = raycaster.intersectObjects( backCheck, true );
+            console.log(intersects2);
+
+            if (intersects2[0].object.type == 'Mesh')
+            {
+                setupOverviewScene();
             overview = true;
+            }
+
             render2();
             
         }
