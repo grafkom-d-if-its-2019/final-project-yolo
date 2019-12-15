@@ -1,6 +1,7 @@
 function main()
 {
     var scene;
+    var camera;
     const renderer = new THREE.WebGLRenderer();
     const loader = new THREE.OBJLoader();
     const matloader = new THREE.MTLLoader();
@@ -37,6 +38,10 @@ function main()
     var objects = [];
     var meshes = [];
     var index = 0;
+
+    var listener;
+    var sound;
+    var sound_flag = 0;
 
     function textureText(cell) {
         var canvas = document.createElement('canvas');
@@ -342,11 +347,11 @@ function main()
 
     function sound_loader(audiofile){
         // create an AudioListener and add it to the camera
-        var listener = new THREE.AudioListener();
+        listener = new THREE.AudioListener();
         camera.add( listener );
 
         // create a global audio source
-        var sound = new THREE.Audio( listener );
+        sound = new THREE.Audio( listener );
 
         // load a sound and set it as the Audio object's buffer
         var audioLoader = new THREE.AudioLoader();
@@ -361,7 +366,7 @@ function main()
     function makeScene() {
         scene = new THREE.Scene();
         scene.background = new THREE.Color(0x000000);
-        var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 3, 100 );
+        camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 3, 100 );
         camera.position.set(0, 0, 10);
         camera.lookAt(0, 0, 0);
         
@@ -379,7 +384,7 @@ function main()
         scene = new THREE.Scene();
         scene.background = new THREE.Color(0x000000)
 
-        var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 3, 1000 );
+        camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 3, 1000 );
         camera.position.set(105.16086905665598, -1.2354888962484027, -75.38730298823702);
         camera.lookAt(0,0,0);
 
@@ -456,6 +461,61 @@ function main()
         return sceneInfo;
     }
 
+    function checkSound(){
+        console.log(sound_flag);
+        if(sound_flag == 0)
+        {
+            if(sound) sound.stop();
+            sound_loader('soundeffect/heartbeat.mp3');
+            sound_flag = -1;
+        }
+        else if (sound_flag == 1){
+            if(sound) sound.stop();
+            sound_loader('soundeffect/eritrosit.mp3');
+            sound_flag = -1;
+        }
+        else if (sound_flag == 2){
+            if(sound) sound.stop();
+            sound_loader('soundeffect/basofil.mp3');
+            sound_flag = -1;
+        }
+        else if (sound_flag == 3){
+            if(sound) sound.stop();
+            sound_loader('soundeffect/eosinofil.mp3');
+            sound_flag = -1;
+        }
+        else if (sound_flag == 4){
+            if(sound) sound.stop();
+            sound_loader('soundeffect/limfositb.mp3');
+            sound_flag = -1;
+        }
+        else if (sound_flag == 5){
+            if(sound) sound.stop();
+            sound_loader('soundeffect/limfositt.mp3');
+            sound_flag = -1;
+        }
+        else if (sound_flag == 6){
+            if(sound) sound.stop();
+            sound_loader('soundeffect/monosit.mp3');
+            sound_flag = -1;
+        }
+        else if (sound_flag == 7){
+            if(sound) sound.stop();
+            sound_loader('soundeffect/neutrofil.mp3');
+            sound_flag = -1;
+        }
+        else if (sound_flag == 8){
+            if(sound) sound.stop();
+            sound_loader('soundeffect/makrofag.mp3');
+            sound_flag = -1;
+        }
+        else if (sound_flag == 9){
+            if(sound) sound.stop();
+            sound_loader('soundeffect/platelet.mp3');
+            sound_flag = -1;
+        }
+    }
+
     function onMouseDown( event ) {
 
         // calculate mouse position in normalized device coordinates
@@ -464,77 +524,101 @@ function main()
         mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
         mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
         // update the picking ray with the camera and mouse position
-        
         // console.log(intersects);
         // play();
         if(overview)
         {
+
             raycaster.setFromCamera( mouse, sceneOverview.camera );
 
             var intersects = raycaster.intersectObjects( meshes, true );
-            if (intersects[0].object.name == 'Cylinder_Cylinder_Material.028')
-            {
-                console.log('Red Blood Cell')
-                sceneOverview = setupScene(0)
-                overview = false
-                render();
+            if(intersects.length>0){
+                if (intersects[0].object.name == 'Cylinder_Cylinder_Material.028')
+                {
+                    console.log('Red Blood Cell')
+                    sceneOverview = setupScene(0)
+                    overview = false
+                    sound_flag = 1;
+                    checkSound();
+                    render();
+                }
+                else if (intersects[0].object.name == 'Sphere_Sphere.000_Sphere_Sphere.000_Material.001')
+                {
+                    console.log('Basofil')
+                    sceneOverview = setupScene(1)
+                    overview = false
+                    sound_flag = 2;
+                    checkSound();
+                    render();
+                }
+                else if (intersects[0].object.name == 'Sphere_Sphere.003_Sphere_Sphere.003_Material.003')
+                {
+                    console.log('Eosinofil')
+                    sceneOverview = setupScene(2)
+                    overview = false
+                    sound_flag = 3;
+                    checkSound();
+                    render();
+                }
+                else if (intersects[0].object.name == 'Sphere_Sphere.008_Sphere_Sphere.008_Material.015')
+                {
+                    console.log('Limfosit B')
+                    sceneOverview = setupScene(3)
+                    overview = false
+                    sound_flag = 4;
+                    checkSound();
+                    render();
+                }
+                else if (intersects[0].object.name == 'Sphere.002_Sphere.002_Material.013')
+                {
+                    console.log('Limfosit T')
+                    sceneOverview = setupScene(4)
+                    overview = false
+                    sound_flag = 5;
+                    checkSound();
+                    render();
+                }
+                else if (intersects[0].object.name == 'Sphere.001_Sphere.002_Sphere.001_Sphere.002_Material.030')
+                {
+                    console.log('Monosit')
+                    sceneOverview = setupScene(5)
+                    overview = false
+                    sound_flag = 6;
+                    checkSound();
+                    render();
+                }
+                else if (intersects[0].object.name == 'Sphere.004_Sphere.004_Material.027')
+                {
+                    console.log('Neutrofil')
+                    sceneOverview = setupScene(6)
+                    overview = false
+                    sound_flag = 7;
+                    checkSound();
+                    render();
+                }
+                else if (intersects[0].object.name == 'Sphere_Sphere.009_Sphere_Sphere.009_Material.016')
+                {
+                    console.log('Makrofag')
+                    sceneOverview = setupScene(7)
+                    overview = false
+                    sound_flag = 8;
+                    checkSound();
+                    render();
+                }
+                else if (intersects[0].object.name == 'Sphere_Sphere_Material.001')
+                {
+                    console.log('Platelet')
+                    sceneOverview = setupScene(8)
+                    overview = false;
+                    sound_flag = 9;
+                    checkSound();
+                    render();
+                }
             }
-            else if (intersects[0].object.name == 'Sphere_Sphere.000_Sphere_Sphere.000_Material.001')
-            {
-                console.log('Basofil')
-                sceneOverview = setupScene(1)
-                overview = false
-                render();
+            else{
+                checkSound();
             }
-            else if (intersects[0].object.name == 'Sphere_Sphere.003_Sphere_Sphere.003_Material.003')
-            {
-                console.log('Eosinofil')
-                sceneOverview = setupScene(2)
-                overview = false
-                render();
-            }
-            else if (intersects[0].object.name == 'Sphere_Sphere.008_Sphere_Sphere.008_Material.015')
-            {
-                console.log('Limfosit B')
-                sceneOverview = setupScene(3)
-                overview = false
-                render();
-            }
-            else if (intersects[0].object.name == 'Sphere.002_Sphere.002_Material.013')
-            {
-                console.log('Limfosit T')
-                sceneOverview = setupScene(4)
-                overview = false
-                render();
-            }
-            else if (intersects[0].object.name == 'Sphere.001_Sphere.002_Sphere.001_Sphere.002_Material.030')
-            {
-                console.log('Monosit')
-                sceneOverview = setupScene(5)
-                overview = false
-                render();
-            }
-            else if (intersects[0].object.name == 'Sphere.004_Sphere.004_Material.027')
-            {
-                console.log('Neutrofil')
-                sceneOverview = setupScene(6)
-                overview = false
-                render();
-            }
-            else if (intersects[0].object.name == 'Sphere_Sphere.009_Sphere_Sphere.009_Material.016')
-            {
-                console.log('Makrofag')
-                sceneOverview = setupScene(7)
-                overview = false
-                render();
-            }
-            else if (intersects[0].object.name == 'Sphere_Sphere_Material.001')
-            {
-                console.log('Platelet')
-                sceneOverview = setupScene(8)
-                overview = false;
-                render();
-            }
+
         }
         else 
         {
@@ -546,11 +630,12 @@ function main()
             if (intersects2[0].object.type == 'Mesh')
             {
                 setupOverviewScene();
-            overview = true;
+                overview = true;
+                sound_flag = 0;
+                checkSound();
+                render2();
             }
-
-            render2();
-            
+ 
         }
     }
 
