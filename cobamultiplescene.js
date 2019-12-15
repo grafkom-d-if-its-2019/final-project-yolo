@@ -12,6 +12,7 @@ function main()
     var path = [];
     var path_index = 0;
     var center_path = [];
+    var rotation_path = [];
     var start_index = [];
     var overview = false;
     var menu = true;
@@ -231,6 +232,19 @@ function main()
             start_index.push(randomNumberInt(0,1750));
         }
     }
+    
+    function generateRotationPath()
+    {
+        var rr;
+        for(rr=0; rr<meshes.length; rr++)
+        {
+            var rx = randomNumber(0.001, 0.01);
+            var ry = randomNumber(0.001, 0.01);
+            var rz = randomNumber(0.001, 0.01);
+            var point = new THREE.Vector3(rx, ry, rz);
+            rotation_path.push(point);
+        }
+    }
 
     function next()
     {
@@ -267,6 +281,7 @@ function main()
             checkSound();
             generatePath();
             generateCenterPath();
+            generateRotationPath();
             console.log(path)
             render2();
         }
@@ -711,10 +726,10 @@ function main()
             if(load_index <= 15){
                 scene.background = menu_background[0];
             }
-            else if(load_index > 15 && load_index <= 30){
+            else if(load_index <= 30){
                 scene.background = menu_background[1];
             }
-            else if(load_index > 30 && load_index <= 45){
+            else if(load_index <= 45){
                 scene.background = menu_background[2];
             }
             else{
@@ -739,7 +754,9 @@ function main()
                     scene.children[j].rotation.x+=0.01;
                 }
                 else{
-                    scene.children[j].rotation.x+=0.005;
+                    scene.children[j].rotation.x+=rotation_path[j].x;
+                    scene.children[j].rotation.y+=rotation_path[j].y;
+                    scene.children[j].rotation.z+=rotation_path[j].z;
                     // sceneCell[0].scene.children[j].rotation.y+=0.001;
                     // sceneCell[0].scene.children[j].rotation.z+=0.01;
                 }
@@ -768,7 +785,7 @@ function main()
         {
             time *= 0.001;
     
-            sceneOverview.object.rotation.z +=0.001;
+            sceneOverview.object.rotation.z +=0.004;
             renderSceneInfo(sceneOverview);
             
             // console.log(path)
