@@ -453,7 +453,7 @@ function main()
         // console.log(text);
 
         var geometry = new THREE.PlaneGeometry( 15, 8, 32 );
-        var material = new THREE.MeshPhongMaterial( {map: text, side: THREE.DoubleSide} );
+        var material = new THREE.MeshLambertMaterial( {map: text, side: THREE.DoubleSide} );
         var plane = new THREE.Mesh( geometry, material );
         plane.position.set(7, 0, 0);
 
