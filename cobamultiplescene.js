@@ -13,7 +13,10 @@ function main()
     var path_index = 0;
     var center_path = [];
     var start_index = [];
-    var overview = true;
+    var overview = false;
+    var menu = true;
+    var load_index = 0;
+    var menu_background = [];
 
     // var spriteMap = new THREE.TextureLoader().load( "assets/back.jpg" );
     // var spriteMaterial = new THREE.SpriteMaterial( { map: spriteMap } );
@@ -42,6 +45,7 @@ function main()
     var listener;
     var sound;
     var sound_flag = 0;
+
 
     function textureText(cell) {
         var canvas = document.createElement('canvas');
@@ -258,8 +262,9 @@ function main()
         }
         else if(index == 9)
         {
-            generateMesh()
+            generateMesh();
             setupOverviewScene();
+            checkSound();
             generatePath();
             generateCenterPath();
             console.log(path)
@@ -343,8 +348,6 @@ function main()
         );
     }
 
-    my_loader('assets/RED.mtl', 'assets/RED.obj', index);
-
     function sound_loader(audiofile){
         // create an AudioListener and add it to the camera
         listener = new THREE.AudioListener();
@@ -380,6 +383,19 @@ function main()
         return {scene, camera};
     }
 
+    function makeSceneMenu() {
+        scene = new THREE.Scene();
+        scene.background = new THREE.Color(0xff0000);
+
+        camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 3, 100 );
+        camera.position.set(0, 0, 10);
+        camera.lookAt(0, 0, 0);
+
+        console.log(scene, camera);
+
+        return {scene, camera};
+    }
+
     function makeSceneOverview() {
         scene = new THREE.Scene();
         scene.background = new THREE.Color(0x000000)
@@ -405,6 +421,26 @@ function main()
         spotLight.target = camera;
 
         return {scene, camera}
+    }
+
+    function setupMenuScene()
+    {
+        sceneOverview = makeSceneMenu();
+        console.log("gatauuu");
+        // sceneOverview.scene.add(sceneOverview.camera);
+
+        var menuTex = new THREE.TextureLoader().load("assets/MainMenu.jpg");
+        sceneOverview.scene.background = menuTex;
+
+        var loadTex1 = new THREE.TextureLoader().load("assets/NowLoading1.jpg");
+        var loadTex2 = new THREE.TextureLoader().load("assets/NowLoading2.jpg");
+        var loadTex3 = new THREE.TextureLoader().load("assets/NowLoading3.jpg");
+    
+        menu_background.push(loadTex1, loadTex2, loadTex3);
+
+        renderMenu();
+
+        // sceneOverview.scene.add(loadCheck[0]);
     }
 
     function setupOverviewScene()
@@ -460,6 +496,8 @@ function main()
 
         return sceneInfo;
     }
+
+    setupMenuScene();
 
     function checkSound(){
         console.log(sound_flag);
@@ -625,17 +663,27 @@ function main()
             
             raycaster.setFromCamera( mouse, sceneOverview.camera );
             var intersects2 = raycaster.intersectObjects( backCheck, true );
-            console.log(intersects2);
+            if(intersects2.length>0){
+                console.log(intersects2);
 
-            if (intersects2[0].object.type == 'Mesh')
-            {
-                setupOverviewScene();
-                overview = true;
-                sound_flag = 0;
-                checkSound();
-                render2();
+                if (intersects2[0].object.type == 'Mesh')
+                {
+                    setupOverviewScene();
+                    overview = true;
+                    sound_flag = 0;
+                    checkSound();
+                    render2();
+                }
             }
- 
+            else{
+                if(menu){
+                    console.log("WOEEE");
+                    my_loader('assets/RED.mtl', 'assets/RED.obj', index);
+                    renderMenu();
+                    overview = true;
+                    menu = false;
+                }
+            }
         }
     }
 
@@ -643,6 +691,40 @@ function main()
 
     function renderSceneInfo(sceneInfo) {  
         renderer.render(sceneInfo.scene, sceneInfo.camera);
+    }
+
+    function renderMenu()
+    {
+        if(index>=9)return;
+        const {scene, camera} = sceneOverview;
+
+        if(menu)
+        {                
+            // console.log(scene.children[6].position.z);
+    
+            // console.log(camera.position.x, camera.position.y, camera.position.z);
+            renderer.render( scene, camera );
+            requestAnimationFrame( renderMenu );
+        }
+        else{
+            load_index++;
+            if(load_index <= 15){
+                scene.background = menu_background[0];
+            }
+            else if(load_index > 15 && load_index <= 30){
+                scene.background = menu_background[1];
+            }
+            else if(load_index > 30 && load_index <= 45){
+                scene.background = menu_background[2];
+            }
+            else{
+                load_index = 0;
+            }
+            
+            renderer.render( scene, camera );
+            requestAnimationFrame( renderMenu );
+        }
+        
     }
 
     function render2()
