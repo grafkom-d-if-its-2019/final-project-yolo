@@ -28,6 +28,54 @@ function main()
     var meshes = [];
     var index = 0;
 
+    function textureText(cell) {
+        var canvas = document.createElement('canvas');
+        canvas.width = 512;
+        canvas.height = 256;
+        
+        var text;
+
+        if(cell == 0) text = "Red Blood Cell";
+        else if(cell == 1) text = "Basofil"
+        else if(cell == 2) text = "Eosinofil"
+        else if(cell == 3) text = "Limfosit B"
+        else if(cell == 4) text = "Limfosit T"
+        else if(cell == 5) text = "Monosit"
+        else if(cell == 6) text = "Neutrofil"
+        else if(cell == 7) text = "Makrofag"
+        else if(cell == 8) text = "Platelet"
+
+
+        const lineHeight = 15;
+        const maxWidth = canvas.width-20;
+        var x = 10, y = 20;
+        var context = canvas.getContext('2d');
+        context.font = '11pt Calibri';
+        context.fillStyle = '#333';
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        var words = text.split(' ');
+        var line = '';
+
+        for(var n = 0; n < words.length; n++) {
+            var testLine = line + words[n] + ' ';
+            var metrics = context.measureText(testLine);
+            var testWidth = metrics.width;
+            if (testWidth > maxWidth && n > 0) {
+                context.fillText(line, x, y);
+                line = words[n] + ' ';
+                y += lineHeight;
+            }
+            else {
+                line = testLine;
+            }
+        }
+        context.fillText(line, x, y);
+
+        var texture = new THREE.Texture(canvas);
+        texture.needsUpdate = true;
+        return texture;
+    };
+
     function generateMesh()
     {
         for(var i=0; i<objects.length; i++)
@@ -290,15 +338,15 @@ function main()
         camera.lookAt(0, 0, 0);
         {
             var color = 0xFFFFFF;
-            var intensity = 1;
-            var light = new THREE.DirectionalLight(color, intensity);
-            light.position.set(0, 2, 4);
-            camera.add(light);
+            // var intensity = 1;
+            var light = new THREE.SpotLight(color);
+            light.position.set(0, 0, 100000);
+            // camera.add(light);
         }
         
         scene.add( sprite );
         
-        return {scene, camera };
+        return {scene, camera , light};
     }
 
     function makeSceneOverview() {
@@ -353,6 +401,15 @@ function main()
         object.position.set(-5,0,0);
         var controls = new THREE.ObjectControls(sceneInfo.camera, renderer.domElement, object);
         controls.setDistance(8, 200); // set min - max distance for zoom
+        var text = textureText(cell);
+
+        // console.log(text);
+
+        var geometry = new THREE.PlaneGeometry( 20, 10, 32 );
+        var material = new THREE.MeshPhongMaterial( {map: text, side: THREE.DoubleSide} );
+        var plane = new THREE.Mesh( geometry, material );
+        plane.position.set(10, 0, 0);
+        // plane.add(sceneInfo.light);
 
         controls.setZoomSpeed(0); // set zoom speed
         controls.enableVerticalRotation(); // enables the vertical rotation, see also disableVerticalRotation(), enableHorizontalRotation(), disableHorizontalRotation()
@@ -362,11 +419,13 @@ function main()
         controls.setRotationSpeed(0.1); // sets a new rotation speed for desktop, see also setRotationSpeedTouchDevices(value)
 
         sceneInfo.scene.add(object);
+        sceneInfo.scene.add(plane);
         sceneInfo.object = object;
         sceneOverview.camera.lookAt(-5,0,0);
 
         // sceneInfo.scene.add(back);
         sceneInfo.scene.add(sceneInfo.camera);
+        sceneInfo.scene.add(sceneInfo.light);
 
         return sceneInfo;
     }
@@ -510,7 +569,7 @@ function main()
             sceneOverview.object.rotation.z +=0.001;
             renderSceneInfo(sceneOverview);
             
-            console.log(path)
+            // console.log(path)
             requestAnimationFrame(render);
         }
     }
