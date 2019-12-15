@@ -5,13 +5,11 @@
 		<title>Blood Circulation Animation</title>
 		<style>
 			* { margin: 0; padding: 0;}
-			/* canvas { width: 100%; height: 100% } */
 		</style>
 		<link rel="stylesheet" href="style.css">
 	</head>
 	<body>
 		<canvas id="myCanvas" hidden></canvas>
-		<iframe src="soundeffect/heartbeat.mp3" allow="autoplay" id="audio" style="display:none"></iframe>
 
 		<!-- Libs -->
 		<script src="libs/three.js"></script>
@@ -21,24 +19,12 @@
 		<script src="libs/OBJLoader.js"></script>
 		<script src="libs/MTLLoader.js"></script>
 		<script src="libs/audioListener.js"></script>
-		<script src="ObjectControls.js"></script>
+		<script src="libs/ObjectControls.js"></script>
 
 		<!-- Meshes -->
 		<script src="bloodvessels.js"></script>
 		
 		<!-- Main -->
-		<!-- <script src="index.js"></script> -->
-		<script src="cobamultiplescene.js"></script>
-		<!-- <script src="text.js"></script> -->
-		
-		<script>
-			// for ( var deg = 0; deg <= 180; deg += 6 ) {
-
-			// 	var rad = Math.PI * deg / 180;
-			// 	var point = new THREE.Vector2( ( 0.72 + .08 * Math.cos( rad ) ) * Math.sin( rad ), - Math.cos( rad ) ); // the "egg equation"
-			// 	console.log( point ); // x-coord should be greater than zero to avoid degenerate triangles; it is not in this formula.
-
-			// }
-		</script>
+		<script src="index.js"></script>
 	</body>
 </html>
